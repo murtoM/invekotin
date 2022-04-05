@@ -3,19 +3,33 @@ Upstream-Name: invekotin
 Upstream-Contact: murtoM
 Source: https://github.com/murtoM/invekotin
 
+# bunch of project meta thingies
 Files: package*.json .gitignore .tern-project
 Copyright: 2022 No one
 License: CC0-1.0
 
+# docker configuration
 Files: Dockerfile docker-compose.yml entrypoint.sh
 Copyright: 2022 Markus Ijäs
 License: CC0-1.0
 
+# readme
 Files: README.md
 Copyright: 2022 Markus Murto
 License: CC0-1.0
 
+# application entry
 Files: src/index.js
+Copyright: 2022 Markus Ijäs
+License: MIT
+
+# controllers
+Files: src/controllers/TypeController.js
+Copyright: 2022 Markus Ijäs
+License: MIT
+
+# views
+Files: src/views/layout.ejs src/views/type.ejs
 Copyright: 2022 Markus Ijäs
 License: MIT
 
