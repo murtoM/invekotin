@@ -10,6 +10,8 @@ const express = require("express");
 const layouts = require("express-ejs-layouts");
 const mongoose = require("mongoose");
 
+const TypeController = require("./controllers/TypeController");
+
 const app = express();
 
 mongoose.connect(DB_URI, {
@@ -23,7 +25,6 @@ db.once("open", () => {
 });
 
 app.set("port", process.env.PORT || 3000);
-
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 
@@ -40,6 +41,8 @@ app.use((req, res, next) => {
   console.log(`A request was made from ${req.url}`);
   next();
 });
+
+app.get("/:typeStr", TypeController.renderTypePage);
 
 app.listen(app.get("port"), () => {
   console.log(`Server running at ${app.get("port")}`);
