@@ -15,8 +15,7 @@ Files: README.md
 Copyright: 2022 Markus Murto
 License: CC0-1.0
 
-# TODO (murtoM): do this once there is some code
-Files: src/*
-Copyright: 2022 To-be-filled (they are just placeholder files atm)
+Files: src/index.js
+Copyright: 2022 Markus Ijäs
 License: MIT
 
