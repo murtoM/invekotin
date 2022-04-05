@@ -8,5 +8,12 @@
     "start": "nodemon src/index.js"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3",
+    "ejs": "^3.1.6",
+    "mongoose": "^6.2.8",
+    "nodemon": "^2.0.15",
+    "express-ejs-layouts": "^2.5.1"
+  }
 }
