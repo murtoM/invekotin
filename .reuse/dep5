@@ -1,0 +1,18 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: invekotin
+Upstream-Contact: murtoM
+Source: https://github.com/murtoM/invekotin
+
+Files: package*.json .gitignore
+Copyright: 2022 No one
+License: CC0-1.0
+
+Files: README.md
+Copyright: 2022 Markus Murto
+License: CC0-1.0
+
+# TODO (murtoM): do this once there is some code
+Files: src/*
+Copyright: 2022 To-be-filled (they are just placeholder files atm)
+License: MIT
+
