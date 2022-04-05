@@ -1,0 +1,11 @@
+{
+    "libs": ["browser", "ecmascript"],
+    "plugins": {
+        "modules": {},
+        "commonjs": {},
+        "node": {},
+        "doc_comment": { "fullDocs": true, "strong": true }
+    },
+    "dontLoad": ["node_modules/**"],
+    "loadEagerly": ["src/**/*.js"]
+}
