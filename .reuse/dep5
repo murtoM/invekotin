@@ -7,6 +7,10 @@ Files: package*.json .gitignore
 Copyright: 2022 No one
 License: CC0-1.0
 
+Files: Dockerfile docker-compose.yml entrypoint.sh
+Copyright: 2022 Markus Ijäs
+License: CC0-1.0
+
 Files: README.md
 Copyright: 2022 Markus Murto
 License: CC0-1.0
