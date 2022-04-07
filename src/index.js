@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const config = require("./config");
 const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:${config.db.port}/${config.db.name}?authMechanism=DEFAULT&authSource=admin`;
 
-const TypeController = require("./controllers/TypeController");
+const ErrorHandler = require("./controllers/errorhandler");
+const EntityStore = require("./controllers/entitystore");
 
 const app = express();
 
@@ -37,10 +38,22 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/:typeStr", TypeController.renderTypePage);
+app.get(
+  "/:typeStr",
+  EntityStore.getEntityStores,
+  EntityStore.renderEntityStore
+);
+app.get("/:typeStr/new", EntityStore.renderNewForm);
+app.post("/:typeStr/new", EntityStore.saveNewEntityStore);
+app.get(
+  "/:typeStr/:storeID",
+  EntityStore.getEntityStores,
+  EntityStore.getEntitiesInStore,
+  EntityStore.renderEntityStore
+);
+
+app.use(ErrorHandler.logErrors);
 
 app.listen(app.get("port"), () => {
   console.log(`Server running at ${app.get("port")}`);
 });
-
-console.log(config);
