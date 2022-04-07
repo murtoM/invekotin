@@ -4,7 +4,7 @@ Upstream-Contact: murtoM
 Source: https://github.com/murtoM/invekotin
 
 # bunch of project meta thingies
-Files: package*.json .gitignore .tern-project .gitattributes
+Files: package*.json .gitignore .tern-project .gitattributes Makefile
 Copyright: 2022 No one
 License: CC0-1.0
 
