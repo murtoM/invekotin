@@ -4,7 +4,7 @@ Upstream-Contact: murtoM
 Source: https://github.com/murtoM/invekotin
 
 # bunch of project meta thingies
-Files: package*.json .gitignore .tern-project
+Files: package*.json .gitignore .tern-project .gitattributes
 Copyright: 2022 No one
 License: CC0-1.0
 
@@ -16,6 +16,11 @@ License: CC0-1.0
 # readme
 Files: README.md
 Copyright: 2022 Markus Murto
+License: CC0-1.0
+
+# planning
+Files: planning/*
+Copyright: 2022 Markus Ijäs
 License: CC0-1.0
 
 # application entry
