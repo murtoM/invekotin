@@ -1,9 +1,9 @@
 IMAGE = invekotin-dev
 
-build:
+build: .env
 	docker build .
 
-run:
+run: .env
 	docker-compose up
 
 clean:
