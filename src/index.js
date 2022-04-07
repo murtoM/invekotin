@@ -1,14 +1,9 @@
-const DB_USER = process.env.MONGO_USERNAME;
-const DB_PWD = process.env.MONGO_PWD;
-const DB_HOST = process.env.MONGO_HOST;
-const DB_PORT = process.env.MONGO_PORT;
-const DB_NAME = process.env.MONGO_DB_NAME;
-
-const DB_URI = `mongodb://${DB_USER}:${DB_PWD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authMechanism=DEFAULT&authSource=admin`;
-
 const express = require("express");
 const layouts = require("express-ejs-layouts");
 const mongoose = require("mongoose");
+
+const config = require("./config");
+const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:${config.db.port}/${config.db.name}?authMechanism=DEFAULT&authSource=admin`;
 
 const TypeController = require("./controllers/TypeController");
 
@@ -24,7 +19,7 @@ db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", config.appPort);
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 
@@ -47,3 +42,5 @@ app.get("/:typeStr", TypeController.renderTypePage);
 app.listen(app.get("port"), () => {
   console.log(`Server running at ${app.get("port")}`);
 });
+
+console.log(config);
