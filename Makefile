@@ -4,15 +4,22 @@ CONTAINERS_RUNNING = $(shell docker ps | grep $(IMAGE) > /dev/null; echo $$?)
 build: .env
 	docker build .
 
+run: up
+
 # at the moment we need only once instance
-run: .env
+up: .env
 ifneq ($(CONTAINERS_RUNNING), 0)
 	docker-compose up
 else
 	@echo 'Containers already running!'
 endif
 
-clean:
+start:
+	docker-compose start
+stop:
+	docker-compose stop
+
+down:
 	docker-compose down
-clean-image: clean
+clean: down
 	docker image rm $(IMAGE)
