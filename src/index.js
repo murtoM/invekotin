@@ -96,15 +96,14 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
+app.get("/entitystore", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 app
-  .route("/entitystore")
+  .route("/entitystore/add")
   .get(EntityStore.renderForm)
   .post(EntityStore.saveNewEntityStore);
+app.get("/entitystore/add/type/:typeStr", EntityStore.renderForm);
 app
-  .route("/entitystore/type/:typeStr")
-  .get(EntityStore.renderForm);
-app
-  .route("/entitystore/:entityID")
+  .route("/entitystore/:entityID/edit")
   .get(EntityStore.renderForm)
   .post(EntityStore.updateEntityStore);
 
@@ -113,13 +112,12 @@ app.get(
   EntityStore.getEntityStoresByType,
   EntityStore.renderEntityStore
 );
-app
-  .route("/:typeStr/:slug")
-  .get(
-    EntityStore.getEntityStoresByType,
-    EntityStore.getSingleEntityStore,
-    EntityStore.renderEntityStore
-  );
+app.get(
+  "/:typeStr/:slug", 
+  EntityStore.getEntityStoresByType,
+  EntityStore.getSingleEntityStore,
+  EntityStore.renderEntityStore
+);
 
 
 app.use(ErrorHandler.logErrors);

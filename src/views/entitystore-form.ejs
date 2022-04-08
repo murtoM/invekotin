@@ -1,9 +1,9 @@
 <% if (id == null) { %>
   <h1>Add a new store</h1>
-  <form action="/entitystore" method="post">
+  <form action="/entitystore/add" method="post">
 <% } else { %>
   <h1>Edit store <%= name %></h1>
-  <form action="/entitystore/<%= id %>" method="post">
+  <form action="/entitystore/<%= id %>/edit" method="post">
 <% } %>
   <label for="name">Name</label>
   <input type="text" id="name" name="name" placeholder="Unique name" value="<%= name %>" />

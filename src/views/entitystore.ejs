@@ -2,7 +2,7 @@
 <%- include("partials/entitystore/storesgrid.ejs", {typeStores: typeStores}) %>
 <% if (entityStore !== null && entityStore !== undefined) { %>
   <h2><%= entityStore.name %></h2>
-  <p><a href="/entitystore/<%= entityStore.id %>">Edit</a></p>
+  <p><a href="/entitystore/<%= entityStore.id %>/edit">Edit</a></p>
   <% if (entityStore.entities) { %>
     <%- include("partials/entitystore/entities.ejs", {entities: entityStore.entities}) %>
     <% } %>
