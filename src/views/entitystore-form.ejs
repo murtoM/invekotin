@@ -1,5 +1,13 @@
 <form action="/<%= typeStr %>/new" method="post">
   <input type="text" name="name" placeholder="Name" />
-  <input type="text" name="allowedTypes" placeholder="Type" />
+  <fieldset>
+    <% for (const [key, val] of Object.entries(availableTypes)) { %>
+      <label for="terms">
+        <input type="checkbox" id="type-<%= key %>" name="allowedTypes" 
+          value="<%= key %>">
+        <%= val.readableName %>
+      </label>
+    <% } %>
+  </fieldset>
   <input type="submit" name="submit" />
 </form>

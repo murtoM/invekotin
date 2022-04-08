@@ -21,7 +21,6 @@ exports.getSingleEntityStore = (req, res, next) => {
   EntityStore.findOne({slug: req.params.slug}, (error, store) => {
     if (error) next(error);
     req.entityStore = store;
-    console.log(store);
     next();
   });
 };
@@ -38,7 +37,10 @@ exports.renderNewForm = (req, res) => {
   if (!(req.params.typeStr in config.entityTypes)) {
     next({code: 404});
   }
-  res.render("entitystore-form", {typeStr: req.params.typeStr});
+  res.render("entitystore-form", {
+    typeStr: req.params.typeStr,
+    availableTypes: config.entityTypes,
+  });
 }
 
 exports.saveNewEntityStore = (req, res) => {
