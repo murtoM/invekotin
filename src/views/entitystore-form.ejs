@@ -3,6 +3,7 @@
   <label for="name">Name</label>
   <input type="text" id="name" name="name" placeholder="Unique name" />
   <fieldset>
+    <legend>Allowed entity types in this store</legend>
     <% for (const [key, val] of Object.entries(availableTypes)) { %>
       <label for="type-<%= key %>">
         <input type="checkbox" id="type-<%= key %>" name="allowedTypes" 
