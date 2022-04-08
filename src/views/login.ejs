@@ -1,0 +1,13 @@
+<h2>Login</h2>
+<form action="/login", method="post">
+  <label for="username">Username</label>
+  <input type="text" name="username" placeholder="Username">
+  <label for="password">Password</label>
+  <input type="password" name="password" placeholder="******">
+  <input type="submit" name="submit" value="Login">
+</form>
+
+<% let user = req.user %>
+<% if (user) { %>
+<p>Authenticated as user <%= user.username %></p>
+<% } %>
