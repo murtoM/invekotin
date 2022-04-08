@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const bodyParser = require("body-parser");
 
 const config = require("./config");
 const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:${config.db.port}/${config.db.name}?authMechanism=DEFAULT&authSource=admin`;
@@ -35,10 +35,12 @@ app.use(
     extended: false,
   })
 );
-app.use(express.json());
 app.use(layouts);
 
-app.use(cookieParser);
+// session and parsers
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(
   expressSession({
     secret: "kisse", // TODO: get from env
@@ -47,18 +49,12 @@ app.use(
   })
 );
 
-passport.use(new LocalStrategy(User.authenticate()));
+// passport
+passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(passport.initialize());
 app.use(passport.session());
-
-// create a test user
-try {
-  let testUser = new User({username: "root", email: "foo@bar"});
-  testUser.setPassword("password");
-  testUser.save();
-} catch (error) {}
 
 app.use((req, res, next) => {
   console.log(`A request was made from ${req.url}`);
@@ -66,6 +62,32 @@ app.use((req, res, next) => {
 });
 
 app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
+
+app.get("/login", (req, res) => {
+  res.render("login", {user: req.user, isAuthenticated: req.isAuthenticated()});
+});
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+  }),
+  (req, res, next) => {
+    req.session.save((error) => {
+      if (error) {
+      return next(error);
+      } 
+      res.redirect("/");
+    });
+  }
+);
+
+app.get("/logout", (req, res, next) => {
+  req.logout();
+  req.session.save((error) => {
+    if (error) return next(error);
+    res.redirect("/login");
+  });
+});
 
 app
   .route("/entitystore")
@@ -92,29 +114,6 @@ app
     EntityStore.renderEntityStore
   );
 
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-  }),
-  (req, res, next) => {
-    req.session.save((error) => {
-      if (error) return next(error);
-      res.redirect("/");
-    });
-  }
-);
-
-app.get("/logout", (req, res, next) => {
-  req.logout();
-  req.session.save((error) => {
-    if (error) return next(error);
-    res.redirect("/login");
-  });
-});
 
 app.use(ErrorHandler.logErrors);
 
