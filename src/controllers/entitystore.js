@@ -43,7 +43,7 @@ exports.renderNewForm = (req, res, next) => {
   });
 }
 
-exports.saveNewEntityStore = (req, res) => {
+exports.saveNewEntityStore = (req, res, next) => {
   if (!(req.params.typeStr in config.entityTypes)) {
     next({code: 404});
   }
