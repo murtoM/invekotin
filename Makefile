@@ -1,4 +1,6 @@
 IMAGE = invekotin-dev
+DB_VOLUME = invekotin_mongodb-data
+
 CONTAINERS_RUNNING = $(shell docker ps | grep $(IMAGE) > /dev/null; echo $$?)
 
 build: .env
@@ -23,3 +25,4 @@ down:
 	docker-compose down
 clean: down
 	docker image rm $(IMAGE)
+	docker volume rm $(DB_VOLUME)
