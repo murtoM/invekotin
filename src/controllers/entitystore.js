@@ -33,7 +33,7 @@ exports.renderEntityStore = (req, res, next) => {
   });
 };
 
-exports.renderNewForm = (req, res) => {
+exports.renderNewForm = (req, res, next) => {
   if (!(req.params.typeStr in config.entityTypes)) {
     next({code: 404});
   }
