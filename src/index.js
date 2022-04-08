@@ -21,6 +21,11 @@ mongoose.connect(DB_URI, {
 
 const db = mongoose.connection;
 
+// Register a static test user
+User.register({username:'root3', email: "foo3@bar"}, 'password', function(err, user) {
+  if (err) { console.log(err); }
+});
+
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
@@ -64,12 +69,14 @@ app.use((req, res, next) => {
 app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
 app.get("/login", (req, res) => {
+  console.log(req.session.messages);
   res.render("login", {user: req.user, isAuthenticated: req.isAuthenticated()});
 });
 app.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
+    failureMessage: true,
   }),
   (req, res, next) => {
     req.session.save((error) => {
