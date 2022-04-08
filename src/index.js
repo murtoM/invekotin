@@ -38,6 +38,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
+
 app.get(
   "/:typeStr",
   EntityStore.getEntityStores,

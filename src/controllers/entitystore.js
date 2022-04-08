@@ -55,3 +55,17 @@ exports.saveNewEntityStore = (req, res) => {
     res.redirect(`/${req.params.typeStr}`);
   });
 };
+
+exports.getAllStores = (req, res, next) => {
+  EntityStore.find({}, (error, stores) => {
+    if (error) next(error);
+    req.stores = stores;
+    next();
+  });
+};
+
+exports.renderStoresDashboard = (req, res, next) => {
+  res.render("entitystores-dashboard", { 
+    stores: req.stores,
+  });
+};
