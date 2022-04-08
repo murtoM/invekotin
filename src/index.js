@@ -42,7 +42,7 @@ app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
 app.get(
   "/:typeStr",
-  EntityStore.getEntityStores,
+  EntityStore.getEntityStoresByType,
   EntityStore.renderEntityStore
 );
 app
@@ -50,10 +50,10 @@ app
   .get(EntityStore.renderNewForm)
   .post(EntityStore.saveNewEntityStore);
 app
-  .route("/:typeStr/:storeID")
+  .route("/:typeStr/:slug")
   .get(
-    EntityStore.getEntityStores,
-    EntityStore.getEntitiesInStore,
+    EntityStore.getEntityStoresByType,
+    EntityStore.getSingleEntityStore,
     EntityStore.renderEntityStore
   );
 

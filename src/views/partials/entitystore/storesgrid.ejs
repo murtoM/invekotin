@@ -1,3 +1,3 @@
 <%typeStores.forEach(s => { %>
-<p>Name: <%= s.name %> <br />Allowed types: <%= s.allowedTypes %></p>
+  <a href="/<%= s.allowedTypes[0] %>/<%= s.slug %>" role="button"><%= s.name %></a>
 <% }); %>

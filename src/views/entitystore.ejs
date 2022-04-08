@@ -1,2 +1,8 @@
 <h1>Type page for <%= typeStr %></h1>
 <%- include("partials/entitystore/storesgrid.ejs", {typeStores: typeStores}) %>
+<% if (entityStore !== null && entityStore !== undefined) { %>
+  <h2><%= entityStore.name %></h2>
+  <% if (entityStore.entities) { %>
+    <%- include("partials/entitystore/entities.ejs", {entities: entityStore.entities}) %>
+    <% } %>
+<% } %>

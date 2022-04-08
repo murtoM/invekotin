@@ -1,7 +1,7 @@
 const config = require("../config");
 const EntityStore = require("../models/entitystore");
 
-exports.getEntityStores = (req, res, next) => {
+exports.getEntityStoresByType = (req, res, next) => {
   if (!(req.params.typeStr in config.entityTypes)) {
     next({code: 404});
   }
@@ -13,14 +13,15 @@ exports.getEntityStores = (req, res, next) => {
   });
 };
 
-exports.getEntitiesInStore = (req, res, next) => {
-  if (req.params.storeID == "") {
+exports.getSingleEntityStore = (req, res, next) => {
+  if (req.params.slug == "") {
     next();
   }
 
-  EntityStore.find({id: req.params.storeID}, (error, store) => {
+  EntityStore.findOne({slug: req.params.slug}, (error, store) => {
     if (error) next(error);
     req.entityStore = store;
+    console.log(store);
     next();
   });
 };
