@@ -2,12 +2,11 @@ const config = require("../config");
 const EntityStore = require("../models/entitystore");
 
 exports.getEntityStoresByType = (req, res, next) => {
-  console.log(req.params.typeStr);
   if (!(req.params.typeStr in config.entityTypes)) {
-    next({code: 404});
+    next({ code: 404 });
   }
 
-  EntityStore.find({allowedTypes: req.params.typeStr}, (error, stores) => {
+  EntityStore.find({ allowedTypes: req.params.typeStr }, (error, stores) => {
     if (error) next(error);
     req.typeStores = stores;
     next();
@@ -19,7 +18,7 @@ exports.getSingleEntityStore = (req, res, next) => {
     next();
   }
 
-  EntityStore.findOne({slug: req.params.slug}, (error, store) => {
+  EntityStore.findOne({ slug: req.params.slug }, (error, store) => {
     if (error) next(error);
     req.entityStore = store;
     next();
@@ -27,23 +26,39 @@ exports.getSingleEntityStore = (req, res, next) => {
 };
 
 exports.renderEntityStore = (req, res, next) => {
-  res.render("entitystore", { 
+  res.render("entitystore", {
     typeStr: req.params.typeStr,
     typeStores: req.typeStores,
     entityStore: req.entityStore,
   });
 };
 
-exports.renderNewForm = (req, res, next) => {
-  if (typeof req.params.typeStr != undefined && !(req.params.typeStr in config.entityTypes)) {
-    next({code: 404});
+exports.renderForm = async (req, res, next) => {
+  let allowedTypes = "";
+  let name = "";
+  let id = null;
+
+  if (typeof req.params.typeStr != "undefined") {
+    allowedTypes = req.params.typeStr;
   }
-  console.log(req.params.typeStr);
+
+  let store = await EntityStore.findById(req.params.entityID).exec();
+
+  if (store != null) {
+    name = store.name;
+    allowedTypes = store.allowedTypes;
+    id = store.id;
+  }
+
   res.render("entitystore-form", {
     typeStr: req.params.typeStr,
     availableTypes: config.entityTypes,
+    name: name,
+    allowedTypes: allowedTypes,
+    id: id,
+    typeStr: req.params.typeStr,
   });
-}
+};
 
 exports.saveNewEntityStore = (req, res, next) => {
   let newEntityStore = new EntityStore({
@@ -57,6 +72,23 @@ exports.saveNewEntityStore = (req, res, next) => {
   });
 };
 
+exports.updateEntityStore = (req, res, next) => {
+  EntityStore.findById(req.params.entityID, (error, store) => {
+    if (error) {
+      next(error);
+      return;
+    }
+
+    store.name = req.body.name;
+    store.allowedTypes = req.body.allowedTypes;
+
+    store.save((error, result) => {
+      if (error) res.send(error);
+      res.redirect(`/${result.allowedTypes[0]}/${result.slug}`);
+    });
+  });
+};
+
 exports.getAllStores = (req, res, next) => {
   EntityStore.find({}, (error, stores) => {
     if (error) next(error);
@@ -66,7 +98,7 @@ exports.getAllStores = (req, res, next) => {
 };
 
 exports.renderStoresDashboard = (req, res, next) => {
-  res.render("entitystores-dashboard", { 
+  res.render("entitystores-dashboard", {
     stores: req.stores,
   });
 };
