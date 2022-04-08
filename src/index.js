@@ -42,11 +42,15 @@ app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
 app
   .route("/entitystore")
-  .get(EntityStore.renderNewForm)
+  .get(EntityStore.renderForm)
   .post(EntityStore.saveNewEntityStore);
 app
   .route("/entitystore/type/:typeStr")
-  .get(EntityStore.renderNewForm);
+  .get(EntityStore.renderForm);
+app
+  .route("/entitystore/:entityID")
+  .get(EntityStore.renderForm)
+  .post(EntityStore.updateEntityStore);
 
 app.get(
   "/:typeStr",

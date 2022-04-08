@@ -15,6 +15,7 @@ const schema = new mongoose.Schema({
   allowedTypes: {
     type: [String],
     enum: Object.keys(config.entityTypes),
+    required: true,
   },
   entities: [{}],
 });
