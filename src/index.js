@@ -43,14 +43,17 @@ app.get(
   EntityStore.getEntityStores,
   EntityStore.renderEntityStore
 );
-app.get("/:typeStr/new", EntityStore.renderNewForm);
-app.post("/:typeStr/new", EntityStore.saveNewEntityStore);
-app.get(
-  "/:typeStr/:storeID",
-  EntityStore.getEntityStores,
-  EntityStore.getEntitiesInStore,
-  EntityStore.renderEntityStore
-);
+app
+  .route("/:typeStr/new")
+  .get(EntityStore.renderNewForm)
+  .post(EntityStore.saveNewEntityStore);
+app
+  .route("/:typeStr/:storeID")
+  .get(
+    EntityStore.getEntityStores,
+    EntityStore.getEntitiesInStore,
+    EntityStore.renderEntityStore
+  );
 
 app.use(ErrorHandler.logErrors);
 
