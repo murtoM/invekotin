@@ -1,13 +1,15 @@
+<h1>Add a new store</h1>
 <form action="/<%= typeStr %>/new" method="post">
-  <input type="text" name="name" placeholder="Name" />
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" placeholder="Unique name" />
   <fieldset>
     <% for (const [key, val] of Object.entries(availableTypes)) { %>
       <label for="type-<%= key %>">
         <input type="checkbox" id="type-<%= key %>" name="allowedTypes" 
-          value="<%= key %>">
+          value="<%= key %>" <%= typeStr == key ? 'checked=checked' : ""%>>
         <%= val.readableName %>
       </label>
     <% } %>
   </fieldset>
-  <input type="submit" name="submit" />
+  <button type="submit" name="submit">Save</button>
 </form>
