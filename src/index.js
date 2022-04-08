@@ -106,6 +106,7 @@ app
   .route("/entitystore/:entityID/edit")
   .get(EntityStore.renderForm)
   .post(EntityStore.updateEntityStore);
+app.get("/entitystore/:entityID/delete", EntityStore.deleteEntityStore);
 
 app.get(
   "/:typeStr",
