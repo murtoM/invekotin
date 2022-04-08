@@ -40,15 +40,19 @@ app.use((req, res, next) => {
 
 app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
+app
+  .route("/entitystore")
+  .get(EntityStore.renderNewForm)
+  .post(EntityStore.saveNewEntityStore);
+app
+  .route("/entitystore/type/:typeStr")
+  .get(EntityStore.renderNewForm);
+
 app.get(
   "/:typeStr",
   EntityStore.getEntityStoresByType,
   EntityStore.renderEntityStore
 );
-app
-  .route("/:typeStr/new")
-  .get(EntityStore.renderNewForm)
-  .post(EntityStore.saveNewEntityStore);
 app
   .route("/:typeStr/:slug")
   .get(

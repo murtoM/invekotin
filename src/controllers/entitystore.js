@@ -2,6 +2,7 @@ const config = require("../config");
 const EntityStore = require("../models/entitystore");
 
 exports.getEntityStoresByType = (req, res, next) => {
+  console.log(req.params.typeStr);
   if (!(req.params.typeStr in config.entityTypes)) {
     next({code: 404});
   }
@@ -34,9 +35,10 @@ exports.renderEntityStore = (req, res, next) => {
 };
 
 exports.renderNewForm = (req, res, next) => {
-  if (!(req.params.typeStr in config.entityTypes)) {
+  if (typeof req.params.typeStr != undefined && !(req.params.typeStr in config.entityTypes)) {
     next({code: 404});
   }
+  console.log(req.params.typeStr);
   res.render("entitystore-form", {
     typeStr: req.params.typeStr,
     availableTypes: config.entityTypes,
@@ -44,10 +46,6 @@ exports.renderNewForm = (req, res, next) => {
 }
 
 exports.saveNewEntityStore = (req, res, next) => {
-  if (!(req.params.typeStr in config.entityTypes)) {
-    next({code: 404});
-  }
-
   let newEntityStore = new EntityStore({
     name: req.body.name,
     allowedTypes: req.body.allowedTypes,
@@ -55,7 +53,7 @@ exports.saveNewEntityStore = (req, res, next) => {
 
   newEntityStore.save((error, result) => {
     if (error) res.send(error);
-    res.redirect(`/${req.params.typeStr}`);
+    res.redirect(`/`);
   });
 };
 

@@ -1,5 +1,5 @@
 <%typeStores.forEach(s => { %>
   <a href="/<%= s.allowedTypes[0] %>/<%= s.slug %>" role="button"><%= s.name %></a>
 <% }); %>
-<a href="/<%= typeof typeStr == "undefined" ? "store" : typeStr %>/new" 
+<a href="/entitystore<%= typeof typeStr == "undefined" ? "" : `/type/${typeStr}` %>" 
   role="button" class="secondary outline">Add</a>
