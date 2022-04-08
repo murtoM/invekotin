@@ -2,7 +2,7 @@
   <input type="text" name="name" placeholder="Name" />
   <fieldset>
     <% for (const [key, val] of Object.entries(availableTypes)) { %>
-      <label for="terms">
+      <label for="type-<%= key %>">
         <input type="checkbox" id="type-<%= key %>" name="allowedTypes" 
           value="<%= key %>">
         <%= val.readableName %>
