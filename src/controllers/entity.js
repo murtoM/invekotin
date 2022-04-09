@@ -10,7 +10,7 @@ const availStrategies = {
   plainStrategy: new PlainStrategy(),
 }
 
-class SchemaDecrypter {
+class SchemaElementParser {
   constructor() {
     this._strategy = null;
   }
@@ -25,7 +25,7 @@ class SchemaDecrypter {
   }
 }
 
-function determineStrategy(content) {
+function getStrategy(content) {
   switch (typeof content) {
     case "object":
       if (Array.isArray(content)) {
@@ -45,22 +45,17 @@ function determineStrategy(content) {
 }
 
 function buildParts(typeStr) {
-  if (!(typeStr in config.entityTypes)) {
-    return null;
-  }
-
   let parts = [];
   const schema = config.entityTypes[typeStr].schema;
-  const decrypter = new SchemaDecrypter();
+  const decrypter = new SchemaElementParser();
 
   for (const [key, value] of Object.entries(schema)) {
-    let partial = {name: "", view: "", validation: ""};
-    let strategy = determineStrategy(value);
-    decrypter.setStrategy(strategy);
-    partial.view = decrypter.determineView(value);
-    partial.validation = decrypter.determineValidators(value);
-    partial.name = key;
-    parts.push(partial);
+    let part = {name: "", view: "", validation: ""};
+    decrypter.setStrategy(getStrategy(value));
+    part.view = decrypter.determineView(value);
+    part.validation = decrypter.determineValidators(value);
+    part.name = key;
+    parts.push(part);
   };
 
   return parts;
