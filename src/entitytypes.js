@@ -8,7 +8,7 @@ module.exports = {
       },
       isbn: String,
       genre: String,
-      additionalGenres: [{genre: String}],
+      additionalGenres: [String],
       author: String,
       read: Boolean,
       language: String,

@@ -7,7 +7,13 @@
     <a href="/entitystore/<%= entityStore.id %>/delete"
       onclick="return confirm('Are you sure?')">Delete</a>
   </p>
-  <% if (entityStore.entities) { %>
+  <h2>Contents</h2>
+  <% if (entityStore.entities && entityStore.entities.length > 0) { %>
     <%- include("partials/entitystore/entities.ejs", {entities: entityStore.entities}) %>
-    <% } %>
+  <% } else { %>
+    <p>Nothing yet</p>
+  <% } %>
+  <p>
+    <a href="/entity/add/type/<%= typeStr %>">Add a <%= typeStr %></a>
+  </p>
 <% } %>

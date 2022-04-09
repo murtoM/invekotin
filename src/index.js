@@ -11,6 +11,7 @@ const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:$
 
 const ErrorHandler = require("./controllers/errorhandler");
 const EntityStore = require("./controllers/entitystore");
+const Entity = require("./controllers/entity");
 const User = require("./models/user");
 
 const app = express();
@@ -95,6 +96,8 @@ app.get("/logout", (req, res, next) => {
     res.redirect("/login");
   });
 });
+
+app.get("/entity/add/type/:typeStr", Entity.renderForm);
 
 app.get("/entitystore", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 app

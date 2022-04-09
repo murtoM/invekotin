@@ -1,0 +1,17 @@
+<% if (id == null) { %>
+  <h1>Add a new <%= typeStr %></h1>
+  <form action="/entity/add" method="post">
+<% } else { %>
+  <h1>Edit entity <%= id %></h1>
+  <form action="/entity/<%= id %>/edit" method="post">
+<% } %>
+  <% parts.forEach(part => { %>
+    <%- include(`partials/entity/${part.view}.ejs`, {
+      name: part.name,
+      validation: part.validation,
+    }) %>
+  <% }); %>
+  <input type="hidden" name="id" value="<%= id %>">
+  <input type="hidden" name="typeStr" value="<%= typeStr %>">
+  <button type="submit" name="submit">Save</button>
+</form>
