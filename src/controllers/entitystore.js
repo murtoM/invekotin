@@ -2,8 +2,11 @@ const config = require("../config");
 const EntityStore = require("../models/entitystore");
 
 exports.getEntityStoresByType = (req, res, next) => {
+  req.typeStores = [];
+  console.log(req.params.typeStr);
   if (!(req.params.typeStr in config.entityTypes)) {
-    next({ code: 404 });
+    res.status(404);
+    next("Type not found. Please check URL.");
   }
 
   EntityStore.find({ allowedTypes: req.params.typeStr }, (error, stores) => {
@@ -14,12 +17,11 @@ exports.getEntityStoresByType = (req, res, next) => {
 };
 
 exports.getSingleEntityStore = (req, res, next) => {
-  if (req.params.slug == "") {
-    next();
-  }
-
   EntityStore.findOne({ slug: req.params.slug }, (error, store) => {
     if (error) next(error);
+    if (store == null) {
+      next("Store not found. Please check URL.");
+    }
     req.entityStore = store;
     next();
   });
@@ -92,7 +94,8 @@ exports.updateEntityStore = (req, res, next) => {
 exports.deleteEntityStore = async (req, res, next) => {
   EntityStore.findOneAndDelete({ _id: req.params.entityID }, (error, doc) => {
     if (error) {
-      return next(error);
+      next(error);
+      return;
     }
     res.redirect(`/${doc.allowedTypes[0]}`);
   });
