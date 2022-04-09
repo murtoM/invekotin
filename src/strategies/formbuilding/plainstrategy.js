@@ -1,6 +1,13 @@
 class PlainStrategy {
   determineView(data) {
-    return "text";
+    switch (typeof data()) {
+      case "string":
+        return "text";
+      case "boolean":
+        return "checkbox";
+      default:
+        return "text";
+    }
   }
 
   determineValidators(data) {

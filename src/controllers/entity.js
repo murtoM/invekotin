@@ -72,7 +72,6 @@ exports.renderForm = (req, res, next) => {
   }
 
   let parts = buildParts(req.params.typeStr);
-  console.log(parts);
   res.render("entity-form", {
     typeStr: req.params.typeStr,
     id: null,
