@@ -90,16 +90,11 @@ exports.updateEntityStore = (req, res, next) => {
 };
 
 exports.deleteEntityStore = async (req, res, next) => {
-  let store = await EntityStore.findById(req.params.entityID).exec();
-  if (store == null) {
-    res.redirect("/");
-  }
-
-  EntityStore.deleteOne({ _id: req.params.entityID }, (error, result) => {
+  EntityStore.findOneAndDelete({ _id: req.params.entityID }, (error, doc) => {
     if (error) {
       return next(error);
     }
-    res.redirect(`/${store.allowedTypes[0]}`);
+    res.redirect(`/${doc.allowedTypes[0]}`);
   });
 };
 
