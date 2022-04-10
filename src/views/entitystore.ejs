@@ -8,12 +8,13 @@
       onclick="return confirm('Are you sure?')">Delete</a>
   </p>
   <h2>Contents</h2>
-  <% if (entityStore.entities && entityStore.entities.length > 0) { %>
-    <%- include("partials/entitystore/entities.ejs", {entities: entityStore.entities}) %>
+  <% console.log(entities) %>
+  <% if (typeof entities == "object" && entities.length > 0) { %>
+    <%- include("partials/entity/entitiesgrid.ejs", {entities: entities, schema: schema}) %>
   <% } else { %>
     <p>Nothing yet</p>
   <% } %>
   <p>
-    <a href="/entity/add/type/<%= typeStr %>">Add a <%= typeStr %></a>
+    <a href="/entity/add/type/<%= typeStr %>/store/<%= entityStore.id %>">Add <%= typeStr %></a>
   </p>
 <% } %>

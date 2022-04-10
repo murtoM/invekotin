@@ -1,8 +1,8 @@
 <% if (id == null) { %>
-  <h1>Add <%= typeStr %></h1>
+  <h1>Add <%= typeStr %> to <%= store.name %></h1>
   <form action="/entity/add" method="post">
 <% } else { %>
-  <h1>Edit entity <%= id %></h1>
+  <h1>Edit entity <%= id %> in <%= store.name %></h1>
   <form action="/entity/<%= id %>/edit" method="post">
 <% } %>
   <% parts.forEach(part => { %>
@@ -13,5 +13,6 @@
   <% }); %>
   <input type="hidden" name="id" value="<%= id %>">
   <input type="hidden" name="typeStr" value="<%= typeStr %>">
+  <input type="hidden" name="storeID" value="<%= store._id %>">
   <button type="submit" name="submit">Save</button>
 </form>

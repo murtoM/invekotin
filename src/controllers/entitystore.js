@@ -1,9 +1,9 @@
 const config = require("../config");
 const EntityStore = require("../models/entitystore");
+const entityModels = require("../models/entity");
 
 exports.getEntityStoresByType = (req, res, next) => {
   req.typeStores = [];
-  console.log(req.params.typeStr);
   if (!(req.params.typeStr in config.entityTypes)) {
     res.status(404);
     next("Type not found. Please check URL.");
@@ -27,11 +27,23 @@ exports.getSingleEntityStore = (req, res, next) => {
   });
 };
 
+exports.getEntitiesInStore = async (req, res, next) => {
+  req.entities = [];
+  for(typeStr of req.entityStore.allowedTypes) {
+    let model = entityModels[typeStr];
+    let foundEntities = await model.find({ _id: { $in: req.entityStore.entities } }).exec();
+    req.entities.push(...foundEntities);
+  }
+  next();
+}
+
 exports.renderEntityStore = (req, res, next) => {
   res.render("entitystore", {
     typeStr: req.params.typeStr,
     typeStores: req.typeStores,
     entityStore: req.entityStore,
+    entities: req.entities,
+    schema: config.entityTypes[req.params.typeStr].schema,
   });
 };
 
@@ -70,7 +82,7 @@ exports.saveNewEntityStore = (req, res, next) => {
 
   newEntityStore.save((error, result) => {
     if (error) res.send(error);
-    res.redirect(`/`);
+    res.redirect(`/${req.body.typeStr in config.entityTypes ? req.body.typeStr : ""}`);
   });
 };
 

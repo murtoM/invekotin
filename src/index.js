@@ -101,7 +101,7 @@ app
   .route("/entity/add")
   .get(Entity.renderEntityTypeSelectPage)
   .post(Entity.saveNewEntity);
-app.get("/entity/add/type/:typeStr", Entity.renderForm);
+app.get("/entity/add/type/:typeStr/store/:storeID", Entity.renderForm);
 
 app.get("/entitystore", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 app
@@ -124,6 +124,7 @@ app.get(
   "/:typeStr/:slug", 
   EntityStore.getEntityStoresByType,
   EntityStore.getSingleEntityStore,
+  EntityStore.getEntitiesInStore,
   EntityStore.renderEntityStore
 );
 

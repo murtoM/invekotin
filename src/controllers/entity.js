@@ -1,5 +1,6 @@
 const config = require("../config");
-const models = require("../models/entity");
+const EntityStore = require("../models/entitystore");
+const entityModels = require("../models/entity");
 const ObjectStrategy = require("../strategies/formbuilding/objectstrategy");
 const ArrayStrategy = require("../strategies/formbuilding/arraystrategy");
 const PlainStrategy = require("../strategies/formbuilding/plainstrategy");
@@ -63,14 +64,28 @@ function buildParts(typeStr) {
 
 exports.renderForm = (req, res, next) => {
   if (!(req.params.typeStr in config.entityTypes)) {
-    res.redirect("/entity/new");
+    res.redirect("/entity/add");
+    return;
   }
 
-  let parts = buildParts(req.params.typeStr);
-  res.render("entity-form", {
-    typeStr: req.params.typeStr,
-    id: null,
-    parts: parts,
+  EntityStore.findById(req.params.storeID, (error, store) => {
+    if (error) {
+      next(error);
+      return;
+    }
+
+    if (store == null) {
+      next("Store not found. Please check URL.");
+      return;
+    }
+
+    let parts = buildParts(req.params.typeStr);
+    res.render("entity-form", {
+      typeStr: req.params.typeStr,
+      store: store,
+      id: null,
+      parts: parts,
+    });
   });
 }
 
@@ -78,6 +93,34 @@ exports.renderEntityTypeSelectPage = (req, res, next) => {
   res.render("entitytype-select", {entityTypes: config.entityTypes});
 }
 
-exports.saveNewEntity = (req, res, next) => {
-  next("Not implemented");
+exports.saveNewEntity = async (req, res, next) => {
+  if (!(req.body.typeStr in config.entityTypes)) {
+    res.redirect("/entity/add");
+  }
+
+  const schema = config.entityTypes[req.body.typeStr].schema;
+  const model = entityModels[req.body.typeStr];
+
+  let store = await EntityStore.findById(req.body.storeID).exec();
+  if (store == null) {
+    next("Store not found");
+    return;
+  }
+
+  let data = {}
+  for (const key of Object.keys(schema)) {
+    data[key] = req.body[key];
+  }
+  
+  let entityObject = new model(data);
+
+  entityObject.save((error) => {
+    if (error) res.send(error);
+
+    store.entities.push(entityObject._id);
+    store.save((error) => {
+      if (error) res.send(error);
+      res.redirect(`/${req.body.typeStr}/${store.slug}`);
+    });
+  });
 }
