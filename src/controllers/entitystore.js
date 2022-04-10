@@ -3,7 +3,7 @@ const EntityStore = require("../models/entitystore");
 const entityModels = require("../models/entity");
 
 exports.getEntityStoresByType = (req, res, next) => {
-  req.typeStores = [];
+  res.locals.typeStores = [];
   if (!(req.params.typeStr in config.entityTypes)) {
     res.status(404);
     next("Type not found. Please check URL.");
@@ -11,7 +11,7 @@ exports.getEntityStoresByType = (req, res, next) => {
 
   EntityStore.find({ allowedTypes: req.params.typeStr }, (error, stores) => {
     if (error) next(error);
-    req.typeStores = stores;
+    res.locals.typeStores = stores;
     next();
   });
 };
@@ -22,17 +22,17 @@ exports.getSingleEntityStore = (req, res, next) => {
     if (store == null) {
       next("Store not found. Please check URL.");
     }
-    req.entityStore = store;
+    res.locals.entityStore = store;
     next();
   });
 };
 
 exports.getEntitiesInStore = async (req, res, next) => {
-  req.entities = [];
-  for(typeStr of req.entityStore.allowedTypes) {
+  res.locals.entities = [];
+  for(typeStr of res.locals.entityStore.allowedTypes) {
     let model = entityModels[typeStr];
-    let foundEntities = await model.find({ _id: { $in: req.entityStore.entities } }).exec();
-    req.entities.push(...foundEntities);
+    let foundEntities = await model.find({ _id: { $in: res.locals.entityStore.entities } }).exec();
+    res.locals.entities.push(...foundEntities);
   }
   next();
 }
@@ -40,9 +40,6 @@ exports.getEntitiesInStore = async (req, res, next) => {
 exports.renderEntityStore = (req, res, next) => {
   res.render("entitystore", {
     typeStr: req.params.typeStr,
-    typeStores: req.typeStores,
-    entityStore: req.entityStore,
-    entities: req.entities,
     schema: config.entityTypes[req.params.typeStr].schema,
   });
 };
@@ -121,13 +118,11 @@ exports.deleteEntityStore = async (req, res, next) => {
 exports.getAllStores = (req, res, next) => {
   EntityStore.find({}, (error, stores) => {
     if (error) next(error);
-    req.stores = stores;
+    res.locals.stores = stores;
     next();
   });
 };
 
 exports.renderStoresDashboard = (req, res, next) => {
-  res.render("entitystores-dashboard", {
-    stores: req.stores,
-  });
+  res.render("entitystores-dashboard");
 };
