@@ -1,6 +1,10 @@
 <%typeStores.forEach(s => { %>
-  <a href="/<%= typeof typeStr != "undefined" ? typeStr : s.allowedTypes[0] %>/<%= s.slug %>" 
-    role="button"><%= s.name %></a>
+  <% if (typeStr !== "undefined" && s.allowedTypes.indexOf(typeStr) != -1) { 
+    part = typeStr;
+  } else {
+    part = s.allowedTypes[0];
+  } %>
+  <a href="/<%= part %>/<%= s.slug %>" role="button"><%= s.name %></a>
 <% }); %>
-<a href="/entitystore/add<%= typeof typeStr == "undefined" ? "" : `/type/${typeStr}` %>" 
+<a href="/entitystore/add<%= typeStr === "undefined" ? "" : `/type/${typeStr}` %>" 
   role="button" class="secondary outline">Add</a>
