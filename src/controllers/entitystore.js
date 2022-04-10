@@ -81,6 +81,11 @@ exports.updateEntityStore = (req, res, next) => {
       return;
     }
 
+    if (store == null) {
+      next("Store not found.");
+      return;
+    }
+
     store.name = req.body.name;
     store.allowedTypes = req.body.allowedTypes;
 
