@@ -25,7 +25,7 @@ class SchemaElementParser {
   }
 }
 
-function getStrategy(content) {
+function getSchemaReadingStrategy(content) {
   switch (typeof content) {
     case "object":
       if (Array.isArray(content)) {
@@ -47,13 +47,13 @@ function getStrategy(content) {
 function buildParts(typeStr) {
   let parts = [];
   const schema = config.entityTypes[typeStr].schema;
-  const decrypter = new SchemaElementParser();
+  const schemaParser = new SchemaElementParser();
 
   for (const [key, value] of Object.entries(schema)) {
     let part = {name: "", view: "", validation: ""};
-    decrypter.setStrategy(getStrategy(value));
-    part.view = decrypter.determineView(value);
-    part.validation = decrypter.determineValidators(value);
+    schemaParser.setStrategy(getSchemaReadingStrategy(value));
+    part.view = schemaParser.determineView(value);
+    part.validation = schemaParser.determineValidators(value);
     part.name = key;
     parts.push(part);
   };
@@ -72,4 +72,8 @@ exports.renderForm = (req, res, next) => {
     id: null,
     parts: parts,
   });
+}
+
+exports.renderEntityTypeSelectPage = (req, res, next) => {
+  res.render("entitytype-select", {entityTypes: config.entityTypes});
 }
