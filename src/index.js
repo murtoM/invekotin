@@ -99,8 +99,8 @@ app.get("/logout", (req, res, next) => {
 
 app
   .route("/entity/add")
-  .get(Entity.renderEntityTypeSelectPage);
-//  .post(Entity.saveNewEntity);
+  .get(Entity.renderEntityTypeSelectPage)
+  .post(Entity.saveNewEntity);
 app.get("/entity/add/type/:typeStr", Entity.renderForm);
 
 app.get("/entitystore", EntityStore.getAllStores, EntityStore.renderStoresDashboard);

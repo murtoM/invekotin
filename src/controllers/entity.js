@@ -77,3 +77,7 @@ exports.renderForm = (req, res, next) => {
 exports.renderEntityTypeSelectPage = (req, res, next) => {
   res.render("entitytype-select", {entityTypes: config.entityTypes});
 }
+
+exports.saveNewEntity = (req, res, next) => {
+  next("Not implemented");
+}
