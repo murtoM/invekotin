@@ -8,7 +8,6 @@
       onclick="return confirm('Are you sure?')">Delete</a>
   </p>
   <h2>Contents</h2>
-  <% console.log(entities) %>
   <% if (typeof entities == "object" && entities.length > 0) { %>
     <%- include("partials/entity/entitiesgrid.ejs", {entities: entities, schema: schema}) %>
   <% } else { %>
