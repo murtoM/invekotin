@@ -1,6 +1,6 @@
 <h1>Type page for <%= typeStr %></h1>
 <%- include("partials/entitystore/storesgrid.ejs", {typeStores: typeStores}) %>
-<% if (entityStore !== null && entityStore !== undefined) { %>
+<% if (typeof entityStore != "undefined" && entityStore !== null) { %>
   <h2><%= entityStore.name %></h2>
   <p>
     <a href="/entitystore/<%= entityStore.id %>/edit">Edit</a>
