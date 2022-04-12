@@ -3,38 +3,114 @@ Upstream-Name: invekotin
 Upstream-Contact: murtoM
 Source: https://github.com/murtoM/invekotin
 
+
 # bunch of project meta thingies
+
 Files: package*.json .gitignore .tern-project .gitattributes Makefile
 Copyright: 2022 No one
 License: CC0-1.0
 
+
 # docker configuration
+
 Files: Dockerfile docker-compose.yml entrypoint.sh
 Copyright: 2022 Markus Ijäs
 License: CC0-1.0
 
+
 # readme
+
 Files: README.md
 Copyright: 2022 Markus Murto
 License: CC0-1.0
 
-# planning
+
+# documentation
+
 Files: planning/*
 Copyright: 2022 Markus Ijäs
 License: CC0-1.0
 
+
 # application entry
+
 Files: src/index.js
 Copyright: 2022 Markus Ijäs
+           2022 Markus Murto
 License: MIT
+
+
+# application config
+
+Files: src/config.js src/entitytypes.js
+Copyright: 2022 Markus Ijäs
+License: CC0-1.0
+
+
+# passport auth
+
+Files: src/passportcontrol.js
+Copyright: 2022 Markus Murto
+License: MIT
+
 
 # controllers
-Files: src/controllers/TypeController.js
+
+Files: src/controllers/entity.js src/controllers/entitystore.js
+       src/controllers/entitytype.js
 Copyright: 2022 Markus Ijäs
 License: MIT
 
+
 # views
-Files: src/views/layout.ejs src/views/type.ejs
+
+Files: src/views/layout.ejs src/views/entity-form.ejs
+       src/views/entitystore-form.ejs src/views/entitystore.ejs
+       src/views/entitystores-dashboard.ejs src/views/entitytype-select.ejs
 Copyright: 2022 Markus Ijäs
+License: MIT
+
+Files: src/views/login.ejs
+Copyright: 2022 Markus Murto
+License: MIT
+
+
+# view partials
+
+Files: src/views/partials/entity/* src/views/partials/entitystore/*
+Copyright: 2022 Markus Ijäs
+License: MIT
+
+
+# models
+
+Files: src/models/entity.js src/models/entitystore.js
+Copyright: 2022 Markus Ijäs
+License: MIT
+
+Files: src/models/user.js
+Copyright: 2022 Markus Murto
+License: MIT
+
+
+# various modules
+
+Files: src/modules/error/*
+Copyright: 2022 Markus Ijäs
+License: MIT
+
+Files: src/modules/user/*
+Copyright: 2022 Markus Murto
+License: MIT
+
+
+# strategies
+
+Files: src/strategies/formbuilding/*
+Copyright: 2022 Markus Ijäs
+License: MIT
+
+Files: src/strategies/auth/*
+Copyright: 2022 Markus Murto
 License: MIT
 
