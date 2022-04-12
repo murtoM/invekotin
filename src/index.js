@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const config = require("./config");
 const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:${config.db.port}/${config.db.name}?authMechanism=DEFAULT&authSource=admin`;
 
-const ErrorHandler = require("./controllers/errorhandler");
+const ErrorHandler = require("./modules/error/errorhandler");
 const EntityStore = require("./controllers/entitystore");
 const Entity = require("./controllers/entity");
 const passportControl = require("./passportcontrol");
@@ -124,8 +124,20 @@ app.get(
   EntityStore.renderEntityStore
 );
 
+app.use(ErrorHandler.logError);
+app.use(ErrorHandler.respondWithError);
 
-app.use(ErrorHandler.logErrors);
+process.on("unhandledRejection", error => {
+  throw error;
+});
+
+process.on("uncaughtException", error => {
+  ErrorHandler.logError(error);
+
+  if (!ErrorHandler.isOperationalError(error)) {
+    process.exit(1);
+  }
+})
 
 app.listen(app.get("port"), () => {
   console.log(`Server running at ${app.get("port")}`);
