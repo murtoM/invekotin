@@ -93,11 +93,17 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
+
+// Entity-specific routes
+
 app
   .route("/entity/add")
   .get(Entity.renderEntityTypeSelectPage)
   .post(Entity.saveNewEntity);
 app.get("/entity/add/type/:typeStr/store/:storeID", Entity.renderForm);
+
+
+// EntityStore-specific routes
 
 app.get("/entitystore", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 app
@@ -124,6 +130,9 @@ app.get(
   EntityStore.renderEntityStore
 );
 
+
+// Error handling
+
 app.use(ErrorHandler.logError);
 app.use(ErrorHandler.respondWithError);
 
@@ -138,6 +147,8 @@ process.on("uncaughtException", error => {
     process.exit(1);
   }
 })
+
+// Now we're ready to start the server
 
 app.listen(app.get("port"), () => {
   console.log(`Server running at ${app.get("port")}`);
