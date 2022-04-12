@@ -4,9 +4,21 @@
   </ul>
   <ul>
     <% for (const [key, content] of Object.entries(config.entityTypes)) { %>
-      <li><a href="/<%= key %>"><%= content.readableName %></a></li>
+      <li>
+        <a href="/<%= key %>" <%= key === firstPathElement ? "class=secondary" : "" %>>
+          <%= content.readableName %>
+        </a>
+      </li>
     <% } %>
-    <li><a href="#">Settings</a></li>
-    <li><a href="#">Profile</a></li>
+    <li>
+      <a href="/settings" <%= firstPathElement === "settings" ? "class=secondary" : "" %>>
+        Settings
+      </a>
+    </li>
+    <li>
+      <a href="/profile" <%= firstPathElement === "profile" ? "class=secondary" : "" %>>
+        Profile
+      </a>
+    </li>
   </ul>
 </nav>
