@@ -24,7 +24,7 @@ mongoose.connect(DB_URI, {
 const db = mongoose.connection;
 
 // Register a static test user
-User.register({username:'root3', password: "password", email: "foo3@bar"});
+User.registerTest({username:'root3', password: "password", email: "foo3@bar"});
 
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
@@ -71,6 +71,7 @@ app.use((req, res, next) => {
 
 app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
+// User account specific routes
 app.get("/login", User.renderLogin);
 app.post("/login",
   passport.authenticate("local", {
@@ -80,6 +81,8 @@ app.post("/login",
   User.login
 );
 app.get("/logout", User.logout);
+app.get("/register", User.renderRegister);
+app.post("/register", User.register, User.renderLogin);
 
 
 // Entity-specific routes
