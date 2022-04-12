@@ -1,3 +1,4 @@
+const NotFoundError = require("../modules/error/NotFoundError");
 const config = require("../config");
 const EntityStore = require("../models/entitystore");
 const entityModels = require("../models/entity");
@@ -5,8 +6,7 @@ const entityModels = require("../models/entity");
 exports.getEntityStoresByType = (req, res, next) => {
   res.locals.typeStores = [];
   if (!(req.params.typeStr in config.entityTypes)) {
-    res.status(404);
-    next("Type not found. Please check URL.");
+    throw new NotFoundError("Type not found. Please check URL.");
   }
 
   EntityStore.find({ allowedTypes: req.params.typeStr }, (error, stores) => {
