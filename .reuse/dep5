@@ -61,12 +61,17 @@ Files: src/controllers/entity.js src/controllers/entitystore.js
 Copyright: 2022 Markus Ijäs
 License: MIT
 
+Files: src/controllers/user.js
+Copyright: 2022 Markus Murt
+License: MIT
+
 
 # views
 
 Files: src/views/layout.ejs src/views/entity-form.ejs
        src/views/entitystore-form.ejs src/views/entitystore.ejs
        src/views/entitystores-dashboard.ejs src/views/entitytype-select.ejs
+       src/views/errors/*
 Copyright: 2022 Markus Ijäs
 License: MIT
 
@@ -97,10 +102,6 @@ License: MIT
 
 Files: src/modules/error/*
 Copyright: 2022 Markus Ijäs
-License: MIT
-
-Files: src/modules/user/*
-Copyright: 2022 Markus Murto
 License: MIT
 
 
