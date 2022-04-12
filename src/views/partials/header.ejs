@@ -1,0 +1,12 @@
+<nav>
+  <ul>
+    <li><strong><a href="/">Invekotin</a></strong></li>
+  </ul>
+  <ul>
+    <% for (const [key, content] of Object.entries(config.entityTypes)) { %>
+      <li><a href="/<%= key %>"><%= content.readableName %></a></li>
+    <% } %>
+    <li><a href="#">Settings</a></li>
+    <li><a href="#">Profile</a></li>
+  </ul>
+</nav>
