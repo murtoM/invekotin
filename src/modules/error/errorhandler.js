@@ -17,7 +17,11 @@ function logErrorMiddleWare(err, req, res, next) {
 }
 
 function respondWithError(err, req, res, next) {
-  res.status(err.statusCode || 500).send(err.message);
+  let code = err.statusCode || 500;
+  res.status(code);
+  res.render(`errors/${code}`, {
+    message: err.message,
+  });
 }
 
 function isOperationalError(error) {
