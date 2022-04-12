@@ -1,19 +1,21 @@
-<table>
-  <thead>
-    <tr>
-      <% for (const key of Object.keys(schema)) { %>
-        <th><%= key.charAt(0).toUpperCase() + key.slice(1) %></th>
-      <% } %>
-    </tr>
-  </thead>
-  <tbody>
-    <% entities.forEach((entity) => { %>
+<figure>
+  <table>
+    <thead>
       <tr>
-        
-        <% for (const key in schema) { %>
-          <td><%= entity[key] %></td>
+        <% for (const key of Object.keys(schema)) { %>
+          <th><%= key.charAt(0).toUpperCase() + key.slice(1) %></th>
         <% } %>
       </tr>
-    <% }); %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% entities.forEach((entity) => { %>
+        <tr>
+          
+          <% for (const key in schema) { %>
+            <td><%= entity[key] %></td>
+          <% } %>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</figure>
