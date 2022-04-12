@@ -42,6 +42,12 @@ app.use(
 );
 app.use(layouts);
 
+// Load common data for views
+app.use((req, res, next) => {
+  res.locals.config = config;
+  next()
+});
+
 // session and parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
