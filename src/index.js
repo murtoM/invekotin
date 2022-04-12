@@ -13,7 +13,7 @@ const ErrorHandler = require("./modules/error/errorhandler");
 const EntityStore = require("./controllers/entitystore");
 const Entity = require("./controllers/entity");
 const passportControl = require("./passportcontrol");
-const registerUser = require("./modules/user/register");
+const User = require("./controllers/user");
 
 const app = express();
 
@@ -24,7 +24,7 @@ mongoose.connect(DB_URI, {
 const db = mongoose.connection;
 
 // Register a static test user
-registerUser({username:'root3', password: "password", email: "foo3@bar"});
+User.register({username:'root3', password: "password", email: "foo3@bar"});
 
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
@@ -65,33 +65,15 @@ app.use((req, res, next) => {
 
 app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
-app.get("/login", (req, res) => {
-  console.log(req.session.messages);
-  res.render("login", {user: req.user, isAuthenticated: req.isAuthenticated()});
-});
-app.post(
-  "/login",
+app.get("/login", User.renderLogin);
+app.post("/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureMessage: true,
   }),
-  (req, res, next) => {
-    req.session.save((error) => {
-      if (error) {
-      return next(error);
-      } 
-      res.redirect("/");
-    });
-  }
+  User.login
 );
-
-app.get("/logout", (req, res, next) => {
-  req.logout();
-  req.session.save((error) => {
-    if (error) return next(error);
-    res.redirect("/login");
-  });
-});
+app.get("/logout", User.logout);
 
 
 // Entity-specific routes
