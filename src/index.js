@@ -12,7 +12,8 @@ const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:$
 const ErrorHandler = require("./controllers/errorhandler");
 const EntityStore = require("./controllers/entitystore");
 const Entity = require("./controllers/entity");
-const User = require("./models/user");
+const passportControl = require("./passportcontrol");
+const registerUser = require("./modules/user/register");
 
 const app = express();
 
@@ -23,9 +24,7 @@ mongoose.connect(DB_URI, {
 const db = mongoose.connection;
 
 // Register a static test user
-User.register({username:'root3', email: "foo3@bar"}, 'password', function(err, user) {
-  if (err) { console.log(err); }
-});
+registerUser({username:'root3', password: "password", email: "foo3@bar"});
 
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
@@ -56,11 +55,8 @@ app.use(
 );
 
 // passport
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passportControl.initialize());
+app.use(passportControl.session());
 
 app.use((req, res, next) => {
   console.log(`A request was made from ${req.url}`);
