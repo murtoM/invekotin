@@ -44,6 +44,7 @@ app.use(layouts);
 
 // Load common data for views
 app.use((req, res, next) => {
+  res.locals.firstPathElement = req.path.split("/")[1]; // Path always starts with forward slash
   res.locals.config = config;
   next()
 });
