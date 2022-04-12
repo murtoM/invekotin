@@ -133,7 +133,7 @@ app.get(
 
 // Error handling
 
-app.use(ErrorHandler.logError);
+app.use(ErrorHandler.logErrorMiddleWare);
 app.use(ErrorHandler.respondWithError);
 
 process.on("unhandledRejection", error => {
