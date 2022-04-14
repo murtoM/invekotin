@@ -80,8 +80,9 @@ exports.renderForm = (req, res, next) => {
       return;
     }
 
+    let parts = [];
     try {
-      let parts = buildParts(req.params.typeStr);
+      parts = buildParts(req.params.typeStr);
     } catch(error) {
       next(error);
       return;
