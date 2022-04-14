@@ -1,9 +1,12 @@
-<% if (id == null) { %>
+<% if (id == null || id == "") { %>
   <h1>Add a new store</h1>
   <form action="/entitystore/add" method="post">
 <% } else { %>
   <h1>Edit store <%= name %></h1>
   <form action="/entitystore/<%= id %>/edit" method="post">
+<% } %>
+<% if (typeof errors != "undefined") { %>
+  <%- include("partials/forms/errors.ejs", {errors: errors}) %>
 <% } %>
   <label for="name">Name</label>
   <input type="text" id="name" name="name" placeholder="Unique name" value="<%= name %>" />

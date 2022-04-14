@@ -63,7 +63,7 @@ function buildParts(typeStr) {
   return parts;
 }
 
-exports.renderForm = (req, res, next) => {
+exports.respondWithNewForm = (req, res, next) => {
   if (!(req.params.typeStr in config.entityTypes)) {
     res.redirect("/entity/add");
     return;
@@ -80,23 +80,23 @@ exports.renderForm = (req, res, next) => {
       return;
     }
 
-    let parts = [];
     try {
-      parts = buildParts(req.params.typeStr);
+      let parts = buildParts(req.params.typeStr);
+
+      res.render("entity-form", {
+        typeStr: req.params.typeStr,
+        store: store,
+        id: null,
+        parts: parts,
+      });
     } catch(error) {
       next(error);
       return;
     }
-    res.render("entity-form", {
-      typeStr: req.params.typeStr,
-      store: store,
-      id: null,
-      parts: parts,
-    });
   });
 }
 
-exports.renderEntityTypeSelectPage = (req, res, next) => {
+exports.respondWithEntityTypeSelectPage = (req, res, next) => {
   res.render("entitytype-select", {entityTypes: config.entityTypes});
 }
 
@@ -123,12 +123,28 @@ exports.saveNewEntity = async (req, res, next) => {
 
   entityObject.save((error) => {
     if (error) {
-      next(error);
+      try {
+        let parts = buildParts(req.body.typeStr);
+
+        res.render("entity-form", {
+          errors: error.errors,
+          typeStr: req.body.typeStr,
+          store: store,
+          id: req.body.id,
+          parts: parts,
+        });
+      } catch(error) {
+        next(error);
+      }
+      return;
     }
 
     store.entities.push(entityObject._id);
     store.save((error) => {
-      if (error) res.send(error);
+      if (error) {
+        next(error);
+        return;
+      }
       res.redirect(`/${req.body.typeStr}/${store.slug}`);
     });
   });

@@ -1,9 +1,12 @@
-<% if (id == null) { %>
+<% if (id == null || id == "") { %>
   <h1>Add <%= typeStr %> to <%= store.name %></h1>
   <form action="/entity/add" method="post">
 <% } else { %>
   <h1>Edit entity <%= id %> in <%= store.name %></h1>
   <form action="/entity/<%= id %>/edit" method="post">
+<% } %>
+<% if (typeof errors != "undefined") { %>
+  <%- include("partials/forms/errors.ejs", {errors: errors}) %>
 <% } %>
   <% parts.forEach(part => { %>
     <%- include(`partials/entity/${part.view}.ejs`, {

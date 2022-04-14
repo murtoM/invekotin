@@ -90,9 +90,9 @@ app.post("/register", User.register, User.renderLogin);
 
 app
   .route("/entity/add")
-  .get(Entity.renderEntityTypeSelectPage)
+  .get(Entity.respondWithEntityTypeSelectPage)
   .post(Entity.saveNewEntity);
-app.get("/entity/add/type/:typeStr/store/:storeID", Entity.renderForm);
+app.get("/entity/add/type/:typeStr/store/:storeID", Entity.respondWithNewForm);
 
 
 // EntityStore-specific routes

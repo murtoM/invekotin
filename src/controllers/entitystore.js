@@ -75,7 +75,6 @@ exports.renderForm = async (req, res, next) => {
     name: name,
     allowedTypes: allowedTypes,
     id: id,
-    typeStr: req.params.typeStr,
   });
 };
 
@@ -87,7 +86,14 @@ exports.saveNewEntityStore = (req, res, next) => {
 
   newEntityStore.save((error, result) => {
     if (error) {
-      next(error);
+      res.render("entitystore-form", {
+        errors: error.errors,
+        typeStr: req.body.typeStr,
+        availableTypes: config.entityTypes,
+        name: req.body.name,
+        allowedTypes: req.body.allowedTypes,
+        id: req.body.id,
+      });
       return;
     }
     res.redirect(`/${req.body.typeStr in config.entityTypes ? req.body.typeStr : ""}`);
@@ -110,7 +116,17 @@ exports.updateEntityStore = (req, res, next) => {
     store.allowedTypes = req.body.allowedTypes;
 
     store.save((error, result) => {
-      if (error) res.send(error);
+      if (error) {
+        res.render("entitystore-form", {
+          errors: error.errors,
+          typeStr: req.body.typeStr,
+          availableTypes: config.entityTypes,
+          name: req.body.name,
+          allowedTypes: req.body.allowedTypes,
+          id: req.body.id,
+        });
+        return;
+      }
       res.redirect(`/${result.allowedTypes[0]}/${result.slug}`);
     });
   });
