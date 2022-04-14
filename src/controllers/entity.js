@@ -51,19 +51,14 @@ function buildParts(typeStr) {
   const schema = config.entityTypes[typeStr].schema;
   const schemaParser = new SchemaElementParser();
 
-  try {
-    for (const [key, value] of Object.entries(schema)) {
-      let part = {name: "", view: "", validation: ""};
-      schemaParser.setStrategy(getSchemaReadingStrategy(value));
-      part.view = schemaParser.determineView(value);
-      part.validation = schemaParser.determineValidators(value);
-      part.name = key;
-      parts.push(part);
-    };
-  } catch(error) {
-    next(error);
-    return;
-  }
+  for (const [key, value] of Object.entries(schema)) {
+    let part = {name: "", view: "", validation: ""};
+    schemaParser.setStrategy(getSchemaReadingStrategy(value));
+    part.view = schemaParser.determineView(value);
+    part.validation = schemaParser.determineValidators(value);
+    part.name = key;
+    parts.push(part);
+  };
 
   return parts;
 }
@@ -85,7 +80,12 @@ exports.renderForm = (req, res, next) => {
       return;
     }
 
-    let parts = buildParts(req.params.typeStr);
+    try {
+      let parts = buildParts(req.params.typeStr);
+    } catch(error) {
+      next(error);
+      return;
+    }
     res.render("entity-form", {
       typeStr: req.params.typeStr,
       store: store,
@@ -121,7 +121,9 @@ exports.saveNewEntity = async (req, res, next) => {
   let entityObject = new model(data);
 
   entityObject.save((error) => {
-    if (error) res.send(error);
+    if (error) {
+      next(error);
+    }
 
     store.entities.push(entityObject._id);
     store.save((error) => {
