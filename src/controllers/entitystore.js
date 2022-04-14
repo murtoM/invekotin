@@ -6,11 +6,15 @@ const entityModels = require("../models/entity");
 exports.getEntityStoresByType = (req, res, next) => {
   res.locals.typeStores = [];
   if (!(req.params.typeStr in config.entityTypes)) {
-    throw new NotFoundError("Type not found. Please check URL.");
+    next(new NotFoundError("Type not found. Please check URL."));
+    return;
   }
 
   EntityStore.find({ allowedTypes: req.params.typeStr }, (error, stores) => {
-    if (error) next(error);
+    if (error) {
+      next(error);
+      return;
+    }
     res.locals.typeStores = stores;
     next();
   });
@@ -18,9 +22,13 @@ exports.getEntityStoresByType = (req, res, next) => {
 
 exports.getSingleEntityStore = (req, res, next) => {
   EntityStore.findOne({ slug: req.params.slug }, (error, store) => {
-    if (error) next(error);
+    if (error) {
+      next(error);
+      return;
+    }
     if (store == null) {
-      next("Store not found. Please check URL.");
+      next(new NotFoundError("Store not found. Please check URL."));
+      return;
     }
     res.locals.entityStore = store;
     next();
@@ -78,7 +86,10 @@ exports.saveNewEntityStore = (req, res, next) => {
   });
 
   newEntityStore.save((error, result) => {
-    if (error) res.send(error);
+    if (error) {
+      next(error);
+      return;
+    }
     res.redirect(`/${req.body.typeStr in config.entityTypes ? req.body.typeStr : ""}`);
   });
 };
@@ -91,7 +102,7 @@ exports.updateEntityStore = (req, res, next) => {
     }
 
     if (store == null) {
-      next("Store not found.");
+      next(new NotFoundError("Store not found."));
       return;
     }
 
@@ -117,7 +128,10 @@ exports.deleteEntityStore = async (req, res, next) => {
 
 exports.getAllStores = (req, res, next) => {
   EntityStore.find({}, (error, stores) => {
-    if (error) next(error);
+    if (error) {
+      next(error);
+      return;
+    }
     res.locals.stores = stores;
     next();
   });

@@ -1,3 +1,4 @@
+const NotFoundError = require("../modules/error/NotFoundError");
 const config = require("../config");
 const EntityStore = require("../models/entitystore");
 const entityModels = require("../models/entity");
@@ -41,7 +42,7 @@ function getSchemaReadingStrategy(content) {
       break;
   
     default:
-      next("Unknown content type in Entity Form Builder");
+      throw new NotFoundError("Unknown content type in Entity Form Builder");
   }
 }
 
@@ -50,14 +51,19 @@ function buildParts(typeStr) {
   const schema = config.entityTypes[typeStr].schema;
   const schemaParser = new SchemaElementParser();
 
-  for (const [key, value] of Object.entries(schema)) {
-    let part = {name: "", view: "", validation: ""};
-    schemaParser.setStrategy(getSchemaReadingStrategy(value));
-    part.view = schemaParser.determineView(value);
-    part.validation = schemaParser.determineValidators(value);
-    part.name = key;
-    parts.push(part);
-  };
+  try {
+    for (const [key, value] of Object.entries(schema)) {
+      let part = {name: "", view: "", validation: ""};
+      schemaParser.setStrategy(getSchemaReadingStrategy(value));
+      part.view = schemaParser.determineView(value);
+      part.validation = schemaParser.determineValidators(value);
+      part.name = key;
+      parts.push(part);
+    };
+  } catch(error) {
+    next(error);
+    return;
+  }
 
   return parts;
 }
@@ -75,7 +81,7 @@ exports.renderForm = (req, res, next) => {
     }
 
     if (store == null) {
-      next("Store not found. Please check URL.");
+      next(new NotFoundError("Store not found. Please check URL."));
       return;
     }
 
@@ -103,7 +109,7 @@ exports.saveNewEntity = async (req, res, next) => {
 
   let store = await EntityStore.findById(req.body.storeID).exec();
   if (store == null) {
-    next("Store not found");
+    next(new NotFoundError("Store not found"));
     return;
   }
 

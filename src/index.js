@@ -133,6 +133,7 @@ process.on("unhandledRejection", error => {
 });
 
 process.on("uncaughtException", error => {
+  ErrorHandler.logError("Uncaught Exception!");
   ErrorHandler.logError(error);
 
   if (!ErrorHandler.isOperationalError(error)) {
