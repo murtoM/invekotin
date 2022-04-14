@@ -12,6 +12,7 @@
     <%- include(`partials/entity/${part.view}.ejs`, {
       name: part.name,
       validation: part.validation,
+      value: part.value,
     }) %>
   <% }); %>
   <input type="hidden" name="id" value="<%= id %>">

@@ -46,7 +46,7 @@ function getSchemaReadingStrategy(content) {
   }
 }
 
-function buildParts(typeStr) {
+function buildParts(typeStr, data = {}) {
   let parts = [];
   const schema = config.entityTypes[typeStr].schema;
   const schemaParser = new SchemaElementParser();
@@ -56,6 +56,7 @@ function buildParts(typeStr) {
     schemaParser.setStrategy(getSchemaReadingStrategy(value));
     part.view = schemaParser.determineView(value);
     part.validation = schemaParser.determineValidators(value);
+    part.value = (key in data ? data[key] : "");
     part.name = key;
     parts.push(part);
   };
@@ -124,7 +125,7 @@ exports.saveNewEntity = async (req, res, next) => {
   entityObject.save((error) => {
     if (error) {
       try {
-        let parts = buildParts(req.body.typeStr);
+        let parts = buildParts(req.body.typeStr, data);
 
         res.render("entity-form", {
           errors: error.errors,
