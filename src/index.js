@@ -24,7 +24,11 @@ mongoose.connect(DB_URI, {
 const db = mongoose.connection;
 
 // Register a static test user
-User.registerTest({username:'root3', password: "password", email: "foo3@bar"});
+User.registerTest({
+  username: "root3",
+  password: "password",
+  email: "foo3@bar",
+});
 
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
@@ -46,7 +50,7 @@ app.use(layouts);
 app.use((req, res, next) => {
   res.locals.firstPathElement = req.path.split("/")[1]; // Path always starts with forward slash
   res.locals.config = config;
-  next()
+  next();
 });
 
 // session and parsers
@@ -74,7 +78,8 @@ app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
 
 // User account specific routes
 app.get("/login", User.renderLogin);
-app.post("/login",
+app.post(
+  "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureMessage: true,
@@ -85,7 +90,6 @@ app.get("/logout", User.logout);
 app.get("/register", User.renderRegister);
 app.post("/register", User.register, User.renderLogin);
 
-
 // Entity-specific routes
 
 app
@@ -93,11 +97,18 @@ app
   .get(Entity.respondWithEntityTypeSelectPage)
   .post(Entity.saveNewEntity);
 app.get("/entity/add/type/:typeStr/store/:storeID", Entity.respondWithNewForm);
-
+app
+  .route("/:typeStr/entity/:entityID/edit")
+  .get(Entity.respondWithEditForm)
+  .post(Entity.updateEntity);
 
 // EntityStore-specific routes
 
-app.get("/entitystore", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
+app.get(
+  "/entitystore",
+  EntityStore.getAllStores,
+  EntityStore.renderStoresDashboard
+);
 app
   .route("/entitystore/add")
   .get(EntityStore.renderForm)
@@ -115,31 +126,30 @@ app.get(
   EntityStore.renderEntityStore
 );
 app.get(
-  "/:typeStr/:slug", 
+  "/:typeStr/:slug",
   EntityStore.getEntityStoresByType,
   EntityStore.getSingleEntityStore,
   EntityStore.getEntitiesInStore,
   EntityStore.renderEntityStore
 );
 
-
 // Error handling
 
 app.use(ErrorHandler.logErrorMiddleWare);
 app.use(ErrorHandler.respondWithError);
 
-process.on("unhandledRejection", error => {
+process.on("unhandledRejection", (error) => {
   throw error;
 });
 
-process.on("uncaughtException", error => {
+process.on("uncaughtException", (error) => {
   ErrorHandler.logError("Uncaught Exception!");
   ErrorHandler.logError(error);
 
   if (!ErrorHandler.isOperationalError(error)) {
     process.exit(1);
   }
-})
+});
 
 // Now we're ready to start the server
 

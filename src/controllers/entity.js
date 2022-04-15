@@ -103,7 +103,8 @@ exports.respondWithEntityTypeSelectPage = (req, res, next) => {
 
 exports.saveNewEntity = async (req, res, next) => {
   if (!(req.body.typeStr in config.entityTypes)) {
-    res.redirect("/entity/add");
+    next(new NotFoundError("Entity not found"));
+    return;
   }
 
   const schema = config.entityTypes[req.body.typeStr].schema;
@@ -149,4 +150,51 @@ exports.saveNewEntity = async (req, res, next) => {
       res.redirect(`/${req.body.typeStr}/${store.slug}`);
     });
   });
+}
+
+exports.respondWithEditForm = (req, res, next) => {
+  if (!(req.params.typeStr in config.entityTypes)) {
+    next(new NotFoundError("Entity not found"));
+    return;
+  }
+
+  const schema = config.entityTypes[req.params.typeStr].schema;
+  const model = entityModels[req.params.typeStr];
+
+  model.findById(req.params.entityID, (error, entity) => {
+    if (error) {
+      next(error);
+      return;
+    }
+
+    if (entity == null) {
+      next(new NotFoundError("Entity not found. Please check URL."));
+      return;
+    }
+
+    let data = {}
+    for (const key of Object.keys(schema)) {
+      data[key] = entity[key];
+    }
+    data["id"] = entity._id;
+
+    try {
+      let parts = buildParts(req.params.typeStr, data);
+
+      res.render("entity-form", {
+        typeStr: req.params.typeStr,
+        store: null,
+        id: entity.id,
+        entity: entity,
+        parts: parts,
+      });
+    } catch(error) {
+      next(error);
+      return;
+    }
+  });
+}
+
+exports.updateEntity = (req, res, next) => {
+  next()
 }
