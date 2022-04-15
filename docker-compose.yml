@@ -8,11 +8,9 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./src:/usr/src/app/src
-      - ./package.json:/usr/src/app/package.json
-      - type: bind
-        source: ./package-lock.json
-        target: /usr/src/app/package-lock.json
+      - ./src:/usr/src/app/src:z
+      - ./package.json:/usr/src/app/package.json:z
+      - ./package-lock.json:/usr/src/app/package-lock.:z
     ports:
       - 3000:3000
     env_file:
