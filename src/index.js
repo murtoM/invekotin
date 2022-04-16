@@ -57,7 +57,6 @@ app.use((req, res, next) => {
 // session and parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(
   expressSession({
     secret: "kisse", // TODO: get from env
