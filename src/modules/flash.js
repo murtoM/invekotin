@@ -25,8 +25,11 @@ module.exports = () => {
       }
     };
 
-    // passport accesses `push` from `req.flash`
-    req.flash = res.locals.flash.push;
+    // get passport messages
+    if (req.session.messages && req.session.messages.length > 0) {
+      req.session.messages.forEach(res.locals.flash.push);
+      req.session.messages = [];
+    }
 
     next();
   };
