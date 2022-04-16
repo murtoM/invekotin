@@ -5,21 +5,21 @@ exports.login = (req, res, next) => {
     if (error) {
       return next(error);
     }
+    if (req.isAuthenticated())
+      res.locals.flash.push("info", "Login successful!");
     res.redirect("/");
   });
 };
 
 exports.renderLogin = (req, res) => {
-  res.render("login", {
-    user: req.user,
-    isAuthenticated: req.isAuthenticated(),
-  });
+  res.render("login", { isAuthenticated: req.isAuthenticated() });
 };
 
 exports.logout = (req, res, next) => {
   req.logout();
   req.session.save((error) => {
     if (error) return next(error);
+    if (!req.isAuthenticated()) res.locals.flash.push("info", "Logged out!");
     res.redirect("/login");
   });
 };

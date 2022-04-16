@@ -14,6 +14,7 @@ const EntityStore = require("./controllers/entitystore");
 const Entity = require("./controllers/entity");
 const passportControl = require("./passportcontrol");
 const User = require("./controllers/user");
+const Flash = require("./modules/flash");
 
 const app = express();
 
@@ -64,6 +65,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(Flash());
 
 // passport
 app.use(passportControl.initialize());

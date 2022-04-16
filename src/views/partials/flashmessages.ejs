@@ -1,0 +1,3 @@
+<% for (let message = flash.consume(); message != null; message = flash.consume()) { %>
+  <p><%= message.type %>: <%= message.msg %></p>
+<% } %>

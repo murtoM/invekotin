@@ -1,4 +1,5 @@
 <h2>Login</h2>
+<% if (!isAuthenticated) { %>
 <form action="/login" method="post">
   <label for="username">Username</label>
   <input type="text" name="username" placeholder="Username">
@@ -6,9 +7,7 @@
   <input type="password" name="password" placeholder="******">
   <input type="submit" name="submit" value="Login">
 </form>
-
-<% if (isAuthenticated) { %>
-<p>Authenticated as user <%= user.username %></p>
 <% } else { %>
-<p>Not Authenticated</p>
+<p>Already logged in!</p>
+<a href="/logout" role="button">Logout</a>
 <% } %>
