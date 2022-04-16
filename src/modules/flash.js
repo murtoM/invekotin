@@ -10,7 +10,7 @@ module.exports = () => {
       push: (type, msg) => {
         if (!msg) {
           msg = type;
-          type = "info";
+          type = "error";
         }
         let message = {
           msg: msg,
