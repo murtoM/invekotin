@@ -42,7 +42,12 @@ License: MIT
 
 # application config
 
-Files: src/config.js src/entitytypes.js
+Files: src/config.js 
+Copyright: 2022 Markus Ijäs
+           2022 Markus Murto
+License: CC0-1.0
+
+Files: src/entitytypes.js
 Copyright: 2022 Markus Ijäs
 License: CC0-1.0
 
@@ -62,7 +67,7 @@ Copyright: 2022 Markus Ijäs
 License: MIT
 
 Files: src/controllers/user.js
-Copyright: 2022 Markus Murt
+Copyright: 2022 Markus Murto
 License: MIT
 
 
