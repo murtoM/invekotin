@@ -65,10 +65,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   expressSession({
-    secret: "kisse", // TODO: get from env
+    secret: config.sessionSecret,
     store: store,
     resave: false,
     saveUninitialized: false,
+    cookie: { secure: config.secureCookies },
   })
 );
 app.use(Flash());
