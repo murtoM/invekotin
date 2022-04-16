@@ -1,0 +1,16 @@
+.flashmessage {
+    border-width: 0.1rem;
+    border-radius: var(--border-radius);
+    border-style: solid;
+    text-align: center;
+    margin-bottom: 0.2rem;
+}
+
+.flashmessage[data-flash-type="info"] {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+.flashmessage[data-flash-type="error"] {
+    border-color: var(--del-color);
+    color: var(--del-color);
+}

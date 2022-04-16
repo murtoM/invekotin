@@ -1,3 +1,5 @@
+<div class="container">
 <% for (let message = flash.consume(); message != null; message = flash.consume()) { %>
-  <p><%= message.type %>: <%= message.msg %></p>
+<p class="flashmessage" data-flash-type=<%= message.type %>><%= message.msg %></p>
 <% } %>
+</div>
