@@ -1,10 +1,10 @@
 const express = require("express");
 const layouts = require("express-ejs-layouts");
 const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
+const MongoDBStore = require("connect-mongodb-session")(expressSession);
 
 const config = require("./config");
 const DB_URI = `mongodb://${config.db.user}:${config.db.pwd}@${config.db.host}:${config.db.port}/${config.db.name}?authMechanism=DEFAULT&authSource=admin`;
@@ -54,12 +54,19 @@ app.use((req, res, next) => {
   next();
 });
 
+// Setup mongodb as the session store
+const store = new MongoDBStore({
+  uri: DB_URI,
+  collection: "sessions",
+});
+
 // session and parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   expressSession({
     secret: "kisse", // TODO: get from env
+    store: store,
     resave: false,
     saveUninitialized: false,
   })
