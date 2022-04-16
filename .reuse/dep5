@@ -83,8 +83,13 @@ License: MIT
 # view partials
 
 Files: src/views/partials/entity/* src/views/partials/entitystore/*
-       src/views/partials/footer.ejs src/views/partials/header.ejs
+       src/views/partials/forms/* src/views/partials/footer.ejs
+       src/views/partials/header.ejs
 Copyright: 2022 Markus Ijäs
+License: MIT
+
+Files: src/views/partials/flashmessages.ejs
+Copyright: 2022 Markus Murto
 License: MIT
 
 
@@ -103,6 +108,10 @@ License: MIT
 
 Files: src/modules/error/*
 Copyright: 2022 Markus Ijäs
+License: MIT
+
+Files: src/modules/flash.js
+Copyright: 2022 Markus Murto
 License: MIT
 
 
