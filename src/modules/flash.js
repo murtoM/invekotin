@@ -16,9 +16,7 @@ module.exports = () => {
           msg: msg,
           type: type,
         };
-        let i = 0;
-        while (req.session.flashmessages[i] != null) i++;
-        req.session.flashmessages[i] = message;
+        req.session.flashmessages[req.session.flashmessages.length - 1] = message;
         req.session.flashmessages.push(null);
       },
       consume: () => {
