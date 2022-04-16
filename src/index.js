@@ -85,6 +85,7 @@ app.post(
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureMessage: true,
+    failureFlash: true,
   }),
   User.login
 );

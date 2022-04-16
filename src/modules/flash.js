@@ -25,6 +25,9 @@ module.exports = () => {
       }
     };
 
+    // passport accesses `push` from `req.flash`
+    req.flash = res.locals.flash.push;
+
     next();
   };
 };
