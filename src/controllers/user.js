@@ -36,18 +36,17 @@ exports.register = async (req, res, next) => {
   try {
     const existing = await User.findOne({ username: userAttribs.username });
     if (existing) {
-      // TODO(murtoM): show user some sort of error message
-      console.log("User already exists!");
+      res.locals.flash.push("error", "User already exists!");
       next();
     } else {
-      // TODO(murtoM): message user that the registration was successful
       const newUser = new User(userAttribs);
       await newUser.save();
+      res.locals.flash.push("info", "Registration successful!");
       next();
     }
   } catch (error) {
-    // TODO(murtoM): user possibly needs some info here too
     console.error(error);
+    res.locals.flash.push("error", "An error occured during registration!");
     next(error);
   }
 };
