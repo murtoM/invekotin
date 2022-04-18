@@ -45,12 +45,12 @@ exports.register = async (req, res, next) => {
     const existing = await User.findOne({ username: userAttribs.username });
     if (existing) {
       res.locals.flash.push("error", "User already exists!");
-      next();
+      res.redirect("/register");
     } else {
       const newUser = new User(userAttribs);
       await newUser.save();
       res.locals.flash.push("info", "Registration successful!");
-      next();
+      req.login(newUser, next);
     }
   } catch (error) {
     console.error(error);
@@ -85,7 +85,7 @@ exports.isAuthenticated = (req, res, next) => {
     return;
   }
   res.redirect("/login");
-}
+};
 
 const validateUserAttribs = (userAttribs) => {
   if (!validator.isAlphanumeric(userAttribs.username, "fi-FI"))
