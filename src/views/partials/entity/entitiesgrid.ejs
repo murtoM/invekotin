@@ -14,7 +14,11 @@
           <% for (const key in schema) { %>
             <td><%= entity[key] %></td>
           <% } %>
-          <td><a href="/<%= firstPathElement %>/entity/<%= entity._id %>/edit">Edit</a></td>
+          <td>
+            <a href="/<%= firstPathElement %>/entity/<%= entity._id %>/edit">Edit</a>
+            <a href="/<%= firstPathElement %>/entity/<%= entity._id %>/delete"
+              onclick="return confirm('Are you sure?')">Delete</a>
+          </td>
         </tr>
       <% }); %>
     </tbody>

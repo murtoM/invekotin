@@ -110,6 +110,7 @@ app
   .route("/:typeStr/entity/:entityID/edit")
   .get(Entity.respondWithEditForm)
   .post(Entity.handleUpdateEntityPost);
+app.get("/:typeStr/entity/:entityID/delete", Entity.deleteEntity);
 
 // EntityStore-specific routes
 

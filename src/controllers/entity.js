@@ -248,3 +248,16 @@ exports.respondWithEditForm = (req, res, next) => {
     }
   });
 }
+
+exports.deleteEntity = async (req, res, next) => {
+  let typeStr = getTypeStr(req);
+  const model = entityModels[typeStr];
+  model.findOneAndDelete({ _id: req.params.entityID }, (error, doc) => {
+    if (error) {
+      next(error);
+      return;
+    }
+    res.locals.flash.push("info", `${typeStr} deleted!`);
+    res.redirect(`/${typeStr}`);
+  });
+};
