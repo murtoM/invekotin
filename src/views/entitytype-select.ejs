@@ -1,4 +1,6 @@
-<h1>Select type</h1>
-<% for (const [key, content] of Object.entries(entityTypes)) { %>
-  <a href="/entity/add/type/<%= key %>" role="button"><%= content.readableName %></a>
-<% } %>
+<article>
+  <header><h1>Select type</h1></header>
+  <% for (const [key, content] of Object.entries(entityTypes)) { %>
+    <a href="/entity/add/type/<%= key %>" role="button"><%= content.readableName %></a>
+  <% } %>
+</article>

@@ -1,13 +1,14 @@
-<h1>Type page for <%= typeStr %></h1>
+<article><header>
 <%- include("partials/entitystore/storesgrid.ejs", {typeStores: typeStores}) %>
+</header>
 <% if (typeof entityStore != "undefined" && entityStore !== null) { %>
-  <h2><%= entityStore.name %></h2>
-  <p>
-    <a href="/entitystore/<%= entityStore.id %>/edit">Edit</a>
-    <a href="/entitystore/<%= entityStore.id %>/delete"
-      onclick="return confirm('Are you sure?')">Delete</a>
-  </p>
-  <h2>Contents</h2>
+  <h2><%= entityStore.name %>
+    <span class="action-links">
+      <a href="/entitystore/<%= entityStore.id %>/edit">Edit</a>
+      <a href="/entitystore/<%= entityStore.id %>/delete"
+        onclick="return confirm('Are you sure?')">Delete</a>
+    </span>
+  </h2>
   <% if (typeof entities == "object" && entities.length > 0) { %>
     <%- include("partials/entity/entitiesgrid.ejs", {entities: entities, schema: schema}) %>
   <% } else { %>
@@ -17,3 +18,4 @@
     <a href="/entity/add/type/<%= typeStr %>/store/<%= entityStore.id %>">Add <%= typeStr %></a>
   </p>
 <% } %>
+</article>

@@ -21,6 +21,7 @@ exports.getEntityStoresByType = (req, res, next) => {
 };
 
 exports.getSingleEntityStore = (req, res, next) => {
+  res.locals.slug = req.params.slug;
   EntityStore.findOne({ slug: req.params.slug }, (error, store) => {
     if (error) {
       next(error);

@@ -151,11 +151,8 @@ app.get(
   "/:typeStr/:slug",
   User.isAuthenticated,
   EntityStore.getEntityStoresByType,
-  User.isAuthenticated,
   EntityStore.getSingleEntityStore,
-  User.isAuthenticated,
   EntityStore.getEntitiesInStore,
-  User.isAuthenticated,
   EntityStore.renderEntityStore
 );
 

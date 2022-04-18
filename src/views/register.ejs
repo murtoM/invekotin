@@ -1,33 +1,35 @@
-<h1>Register</h1>
+<article>
+  <header><h1>Register</h1></header>
 
-<form action="/register" method="post">
-  <label for="username">Username</label>
-  <input
-    type="text"
-    name="username"
-    placeholder="Username"
-    minlength="3"
-    maxlength="128"
-    required
-  />
-  <label for="email">Email</label>
-  <input
-    type="email"
-    name="email"
-    placeholder="Email"
-    maxlength="128"
-    required
-  />
-  <label for="password">Password</label>
-  <input
-    type="password"
-    name="password"
-    placeholder="********"
-    minlength="8"
-    maxlength="71"
-    required
-  />
-  <% /* TODO(murtoM): add second password field to check user has typed
-  correctly */ %>
-  <input type="submit" name="submit" value="Register" />
-</form>
+  <form action="/register" method="post">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      name="username"
+      placeholder="Username"
+      minlength="3"
+      maxlength="128"
+      required
+    />
+    <label for="email">Email</label>
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      maxlength="128"
+      required
+    />
+    <label for="password">Password</label>
+    <input
+      type="password"
+      name="password"
+      placeholder="********"
+      minlength="8"
+      maxlength="71"
+      required
+    />
+    <% /* TODO(murtoM): add second password field to check user has typed
+    correctly */ %>
+    <input type="submit" name="submit" value="Register" />
+  </form>
+</article>

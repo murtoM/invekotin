@@ -13,19 +13,14 @@
       type="text/css"
       href="/css/common-styles.css"
     />
-    <!--<link
-      rel="stylesheet"
-      type="text/css"
-      href="/css/layout.css"
-      media="screen"
-    />-->
     <title>Invekotin</title>
   </head>
   <body>
-    <a name="top"></a>
     <%- include("partials/header") %>
-    <%- include("partials/flashmessages") %>
-    <main class="container"><%- body %></main>
+    <main id="site-content" class="container">
+      <%- include("partials/flashmessages") %>
+      <%- body %>
+    </main>
     <%- include("partials/footer") %>
   </body>
 </html>

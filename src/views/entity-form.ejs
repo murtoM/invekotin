@@ -1,22 +1,24 @@
-<% if (store !== null) { %>
-  <h1>Add <%= typeStr %> to <%= store.name %></h1>
-  <form action="/entity/add" method="post">
-<% } else { %>
-  <h1>Edit entity <%= entity.name %></h1>
-  <form action="/<%= typeStr %>/entity/<%= id %>/edit" method="post">
-<% } %>
-<% if (typeof errors != "undefined") { %>
-  <%- include("partials/forms/errors.ejs", {errors: errors}) %>
-<% } %>
-  <% parts.forEach(part => { %>
-    <%- include(`partials/entity/${part.view}.ejs`, {
-      name: part.name,
-      validation: part.validation,
-      value: part.value,
-    }) %>
-  <% }); %>
-  <input type="hidden" name="id" value="<%= id %>">
-  <input type="hidden" name="typeStr" value="<%= typeStr %>">
-  <input type="hidden" name="storeID" value="<%= store !== null ? store._id : "" %>">
-  <button type="submit" name="submit">Save</button>
-</form>
+<article>
+  <% if (store !== null) { %>
+    <header><h1>Add <%= typeStr %> to <%= store.name %></h1></header>
+    <form action="/entity/add" method="post">
+  <% } else { %>
+    <header><h1>Edit entity <%= entity.name %></h1></header>
+    <form action="/<%= typeStr %>/entity/<%= id %>/edit" method="post">
+  <% } %>
+  <% if (typeof errors != "undefined") { %>
+    <%- include("partials/forms/errors.ejs", {errors: errors}) %>
+  <% } %>
+    <% parts.forEach(part => { %>
+      <%- include(`partials/entity/${part.view}.ejs`, {
+        name: part.name,
+        validation: part.validation,
+        value: part.value,
+      }) %>
+    <% }); %>
+    <input type="hidden" name="id" value="<%= id %>">
+    <input type="hidden" name="typeStr" value="<%= typeStr %>">
+    <input type="hidden" name="storeID" value="<%= store !== null ? store._id : "" %>">
+    <button type="submit" name="submit">Save</button>
+  </form>
+</article>

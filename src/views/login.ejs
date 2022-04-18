@@ -1,27 +1,29 @@
-<h2>Login</h2>
-<% if (!isAuthenticated) { %>
-<form action="/login" method="post">
-  <label for="username">Username</label>
-  <input
-    type="text"
-    name="username"
-    placeholder="Username"
-    minlength="3"
-    maxlength="128"
-    required
-  />
-  <label for="password">Password</label>
-  <input
-    type="password"
-    name="password"
-    placeholder="********"
-    minlength="8"
-    maxlength="71"
-    required
-  />
-  <input type="submit" name="submit" value="Login" />
-</form>
-<% } else { %>
-<p>Already logged in!</p>
-<a href="/logout" role="button">Logout</a>
-<% } %>
+<article>
+  <header><h2>Login</h2></header>
+  <% if (!isAuthenticated) { %>
+  <form action="/login" method="post">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      name="username"
+      placeholder="Username"
+      minlength="3"
+      maxlength="128"
+      required
+    />
+    <label for="password">Password</label>
+    <input
+      type="password"
+      name="password"
+      placeholder="********"
+      minlength="8"
+      maxlength="71"
+      required
+    />
+    <input type="submit" name="submit" value="Login" />
+  </form>
+  <% } else { %>
+  <p>Already logged in!</p>
+  <a href="/logout" role="button">Logout</a>
+  <% } %>
+</article>

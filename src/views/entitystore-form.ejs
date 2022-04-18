@@ -1,28 +1,30 @@
-<% if (id == null || id == "") { %>
-  <h1>Add a new store</h1>
-  <form action="/entitystore/add" method="post">
-<% } else { %>
-  <h1>Edit store <%= name %></h1>
-  <form action="/entitystore/<%= id %>/edit" method="post">
-<% } %>
-<% if (typeof errors != "undefined") { %>
-  <%- include("partials/forms/errors.ejs", {errors: errors}) %>
-<% } %>
-  <label for="name">Name</label>
-  <input type="text" id="name" name="name" placeholder="Unique name" value="<%= name %>" />
-  <fieldset>
-    <legend>Allowed entity types in this store</legend>
-    <% for (const [key, val] of Object.entries(availableTypes)) { %>
-      <label for="type-<%= key %>">
-        <input type="checkbox" id="type-<%= key %>" name="allowedTypes" 
-          value="<%= key %>" 
-          <%= (typeStr == key || allowedTypes.includes(key)) ? 'checked=checked' : ""%>
-        >
-        <%= val.readableName %>
-      </label>
-    <% } %>
-  </fieldset>
-  <input type="hidden" name="id" value="<%= id %>">
-  <input type="hidden" name="typeStr" value="<%= typeStr %>">
-  <button type="submit" name="submit">Save</button>
-</form>
+<article>
+  <% if (id == null || id == "") { %>
+    <header><h1>Add a new store</h1></header>
+    <form action="/entitystore/add" method="post">
+  <% } else { %>
+    <header><h1>Edit store <%= name %></h1></header>
+    <form action="/entitystore/<%= id %>/edit" method="post">
+  <% } %>
+  <% if (typeof errors != "undefined") { %>
+    <%- include("partials/forms/errors.ejs", {errors: errors}) %>
+  <% } %>
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Unique name" value="<%= name %>" />
+    <fieldset>
+      <legend>Allowed entity types in this store</legend>
+      <% for (const [key, val] of Object.entries(availableTypes)) { %>
+        <label for="type-<%= key %>">
+          <input type="checkbox" id="type-<%= key %>" name="allowedTypes" 
+            value="<%= key %>" 
+            <%= (typeStr == key || allowedTypes.includes(key)) ? 'checked=checked' : ""%>
+          >
+          <%= val.readableName %>
+        </label>
+      <% } %>
+    </fieldset>
+    <input type="hidden" name="id" value="<%= id %>">
+    <input type="hidden" name="typeStr" value="<%= typeStr %>">
+    <button type="submit" name="submit">Save</button>
+  </form>
+</article>
