@@ -1,3 +1,5 @@
+const validator = require("validator");
+
 const User = require("../models/user");
 
 exports.login = (req, res, next) => {
@@ -31,6 +33,13 @@ exports.register = async (req, res, next) => {
     password: req.body.password,
     email: req.body.email,
   };
+
+  try {
+    validateUserAttribs(userAttribs);
+  } catch (error) {
+    res.locals.flash.push("error", error.message);
+    res.redirect("/register");
+  }
 
   try {
     const existing = await User.findOne({ username: userAttribs.username });
@@ -68,4 +77,21 @@ exports.registerTest = async (user) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+const validateUserAttribs = (userAttribs) => {
+  if (!validator.isAlphanumeric(userAttribs.username, "fi-FI"))
+    throw new Error("Username must contain only alphanumeric characters!");
+
+  if (!validator.isLength(userAttribs.username, { min: 3, max: 128 }))
+    throw new Error("Username length must be between 3 128 characters!");
+
+  if (!validator.isEmail(userAttribs.email))
+    throw new Error("Not a valid email address!");
+
+  if (!validator.isLength(userAttribs.email, { max: 128 }))
+    throw new Error("Email must be at most 128 characters long!");
+
+  if (!validator.isLength(userAttribs.password, { min: 8, max: 71 }))
+    throw new Error("Password length must be between 8 and 71 characters!");
 };
