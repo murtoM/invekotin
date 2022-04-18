@@ -7,7 +7,7 @@ const User = require("../../models/user");
 const localMongoStrategy = new LocalStrategy(
   async (username, password, done) => {
     try {
-      if (!validator.isAlphanumeric(username, "fi-FI"))
+      if (!validator.isAlphanumeric(username, "fi-FI", {ignore: ".,'\"@+-_"}))
         throw new Error("Username must contain only alphanumeric characters!");
 
       if (!validator.isLength(username, { min: 3, max: 128 }))

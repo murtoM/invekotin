@@ -88,7 +88,7 @@ exports.isAuthenticated = (req, res, next) => {
 };
 
 const validateUserAttribs = (userAttribs) => {
-  if (!validator.isAlphanumeric(userAttribs.username, "fi-FI"))
+  if (!validator.isAlphanumeric(userAttribs.username, "fi-FI", {ignore: ".,'\"@+-_"}))
     throw new Error("Username must contain only alphanumeric characters!");
 
   if (!validator.isLength(userAttribs.username, { min: 3, max: 128 }))
