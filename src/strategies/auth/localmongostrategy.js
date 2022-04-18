@@ -11,7 +11,7 @@ const localMongoStrategy = new LocalStrategy(
         throw new Error("Username must contain only alphanumeric characters!");
 
       if (!validator.isLength(username, { min: 3, max: 128 }))
-        throw new Error("Username length must be between 3 128 characters!");
+        throw new Error("Username length must be between 3 and 128 characters!");
 
       if (!validator.isLength(password, { min: 8, max: 71 }))
         throw new Error("Password length must be between 8 and 71 characters!");

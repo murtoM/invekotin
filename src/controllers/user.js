@@ -92,7 +92,7 @@ const validateUserAttribs = (userAttribs) => {
     throw new Error("Username must contain only alphanumeric characters!");
 
   if (!validator.isLength(userAttribs.username, { min: 3, max: 128 }))
-    throw new Error("Username length must be between 3 128 characters!");
+    throw new Error("Username length must be between 3 and 128 characters!");
 
   if (!validator.isEmail(userAttribs.email))
     throw new Error("Not a valid email address!");
