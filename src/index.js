@@ -104,12 +104,12 @@ app.post("/register", User.register, User.renderLogin);
 app
   .route("/entity/add")
   .get(Entity.respondWithEntityTypeSelectPage)
-  .post(Entity.saveNewEntity);
+  .post(Entity.handleNewEntityPost);
 app.get("/entity/add/type/:typeStr/store/:storeID", Entity.respondWithNewForm);
 app
   .route("/:typeStr/entity/:entityID/edit")
   .get(Entity.respondWithEditForm)
-  .post(Entity.updateEntity);
+  .post(Entity.handleUpdateEntityPost);
 
 // EntityStore-specific routes
 

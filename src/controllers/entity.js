@@ -64,12 +64,125 @@ function buildParts(typeStr, data = {}) {
   return parts;
 }
 
-exports.respondWithNewForm = (req, res, next) => {
-  if (!(req.params.typeStr in config.entityTypes)) {
-    res.redirect("/entity/add");
-    return;
+function getTypeStr(req) {
+  let typeStr = req.body.typeStr || req.params.typeStr || req.path.split("/")[1];
+  if (!(typeStr in config.entityTypes)) {
+    throw new NotFoundError("Entity type not found");
+  }
+  return typeStr;
+}
+
+async function getStore(id) {
+  let store = await EntityStore.findById(id).exec();
+  if (store == null) {
+    throw new NotFoundError("Store not found");
+  }
+  return store;
+}
+
+function buildDataObject(typeStr, req) {
+  const schema = config.entityTypes[typeStr].schema;
+  let data = {}
+  for (const key of Object.keys(schema)) {
+    data[key] = req.body[key];
+  }
+  return data;
+}
+
+async function saveNewEntity(typeStr, data) {
+  const model = entityModels[typeStr];
+  let entityObject = new model(data);
+
+  return await entityObject.save();
+}
+
+async function updateEntity(entityID, typeStr, data) {
+  const model = entityModels[typeStr];
+  entityObject = await model.findById(entityID).exec();
+
+  if (entityObject === null) {
+    throw new NotFoundError("Entity not found.");
   }
 
+  for (const key in data) {
+    entityObject[key] = data[key];
+  }
+
+  return await entityObject.save();
+}
+
+function addEntityToStore(store, entityID) {
+  store.entities.push(entityID);
+  store.save((error) => {
+    if (error) {
+      throw new InternalServerError(error);
+    }
+  });
+  return;
+}
+
+exports.handleNewEntityPost = async (req, res, next) => {
+  try {
+    let typeStr = getTypeStr(req);
+    res.locals.typeStr = typeStr;
+    let store = await getStore(req.body.storeID);
+    res.locals.storeID = store._id;
+    let data = buildDataObject(typeStr, req);
+    try {
+      let result = await saveNewEntity(typeStr, data);
+      addEntityToStore(store, result._id);
+      res.locals.flash.push("info", `New ${typeStr} saved!`);
+      res.redirect(`/${typeStr}/${store.slug}`);
+    } catch (error) {
+      let parts = buildParts(typeStr, data);
+      res.render("entity-form", {
+        errors: error.errors,
+        typeStr: typeStr,
+        store: store,
+        id: null,
+        parts: parts,
+      });
+    }
+  } catch (error) {
+    next(error);
+    return;
+  }
+  next();
+}
+
+exports.handleUpdateEntityPost = async (req, res, next) => {
+  try {
+    let typeStr = getTypeStr(req);
+    res.locals.typeStr = typeStr;
+    let data = buildDataObject(typeStr, req);
+    try {
+      await updateEntity(req.body.id, typeStr, data);
+      res.locals.flash.push("info", `Existing ${typeStr} updated!`);
+      res.redirect(`/${typeStr}`);
+    } catch (error) {
+      let parts = buildParts(typeStr, data);
+      res.render("entity-form", {
+        errors: error.errors,
+        typeStr: typeStr,
+        store: null,
+        id: req.body.id,
+        entity: await entityModels[typeStr].findById(req.body.id).exec(),
+        parts: parts,
+      });
+    }
+  } catch (error) {
+    next(error);
+    return;
+  }
+  next();
+}
+
+exports.respondWithEntityTypeSelectPage = (req, res, next) => {
+  res.render("entitytype-select", {entityTypes: config.entityTypes});
+}
+
+exports.respondWithNewForm = (req, res, next) => {
+  let typeStr = getTypeStr(req);
   EntityStore.findById(req.params.storeID, (error, store) => {
     if (error) {
       next(error);
@@ -82,10 +195,10 @@ exports.respondWithNewForm = (req, res, next) => {
     }
 
     try {
-      let parts = buildParts(req.params.typeStr);
+      let parts = buildParts(typeStr);
 
       res.render("entity-form", {
-        typeStr: req.params.typeStr,
+        typeStr: typeStr,
         store: store,
         id: null,
         parts: parts,
@@ -97,69 +210,10 @@ exports.respondWithNewForm = (req, res, next) => {
   });
 }
 
-exports.respondWithEntityTypeSelectPage = (req, res, next) => {
-  res.render("entitytype-select", {entityTypes: config.entityTypes});
-}
-
-exports.saveNewEntity = async (req, res, next) => {
-  if (!(req.body.typeStr in config.entityTypes)) {
-    next(new NotFoundError("Entity not found"));
-    return;
-  }
-
-  const schema = config.entityTypes[req.body.typeStr].schema;
-  const model = entityModels[req.body.typeStr];
-
-  let store = await EntityStore.findById(req.body.storeID).exec();
-  if (store == null) {
-    next(new NotFoundError("Store not found"));
-    return;
-  }
-
-  let data = {}
-  for (const key of Object.keys(schema)) {
-    data[key] = req.body[key];
-  }
-  
-  let entityObject = new model(data);
-
-  entityObject.save((error) => {
-    if (error) {
-      try {
-        let parts = buildParts(req.body.typeStr, data);
-
-        res.render("entity-form", {
-          errors: error.errors,
-          typeStr: req.body.typeStr,
-          store: store,
-          id: req.body.id,
-          parts: parts,
-        });
-      } catch(error) {
-        next(error);
-      }
-      return;
-    }
-
-    store.entities.push(entityObject._id);
-    store.save((error) => {
-      if (error) {
-        next(error);
-        return;
-      }
-      res.redirect(`/${req.body.typeStr}/${store.slug}`);
-    });
-  });
-}
-
 exports.respondWithEditForm = (req, res, next) => {
-  if (!(req.params.typeStr in config.entityTypes)) {
-    next(new NotFoundError("Entity not found"));
-    return;
-  }
-
-  const schema = config.entityTypes[req.params.typeStr].schema;
-  const model = entityModels[req.params.typeStr];
+  let typeStr = getTypeStr(req);
+  const schema = config.entityTypes[typeStr].schema;
+  const model = entityModels[typeStr];
 
   model.findById(req.params.entityID, (error, entity) => {
     if (error) {
@@ -179,10 +233,10 @@ exports.respondWithEditForm = (req, res, next) => {
     data["id"] = entity._id;
 
     try {
-      let parts = buildParts(req.params.typeStr, data);
+      let parts = buildParts(typeStr, data);
 
       res.render("entity-form", {
-        typeStr: req.params.typeStr,
+        typeStr: typeStr,
         store: null,
         id: entity.id,
         entity: entity,
@@ -193,8 +247,4 @@ exports.respondWithEditForm = (req, res, next) => {
       return;
     }
   });
-}
-
-exports.updateEntity = (req, res, next) => {
-  next()
 }

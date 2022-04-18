@@ -1,4 +1,4 @@
-<% if (id == null || id == "") { %>
+<% if (store !== null) { %>
   <h1>Add <%= typeStr %> to <%= store.name %></h1>
   <form action="/entity/add" method="post">
 <% } else { %>
@@ -17,6 +17,6 @@
   <% }); %>
   <input type="hidden" name="id" value="<%= id %>">
   <input type="hidden" name="typeStr" value="<%= typeStr %>">
-  <input type="hidden" name="storeID" value="<%= store != null ? store._id : "" %>">
+  <input type="hidden" name="storeID" value="<%= store !== null ? store._id : "" %>">
   <button type="submit" name="submit">Save</button>
 </form>
