@@ -69,3 +69,11 @@ exports.registerTest = async (user) => {
     console.error(error);
   }
 };
+
+exports.isAuthenticated = (req, res) => {
+  if (req.isAuthenticated()) {
+    next();
+    return;
+  }
+  res.redirect("/login");
+}

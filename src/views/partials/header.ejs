@@ -3,22 +3,30 @@
     <li><strong><a href="/">Invekotin</a></strong></li>
   </ul>
   <ul>
-    <% for (const [key, content] of Object.entries(config.entityTypes)) { %>
+    <% if (loggedIn) { %>
+      <% for (const [key, content] of Object.entries(config.entityTypes)) { %>
+        <li>
+          <a href="/<%= key %>" <%= key === firstPathElement ? "class=secondary" : "" %>>
+            <%= content.readableName %>
+          </a>
+        </li>
+      <% } %>
       <li>
-        <a href="/<%= key %>" <%= key === firstPathElement ? "class=secondary" : "" %>>
-          <%= content.readableName %>
+        <a href="/settings" <%= firstPathElement === "settings" ? "class=secondary" : "" %>>
+          Settings
+        </a>
+      </li>
+      <li>
+        <a href="/logout" %>>
+          Log out
+        </a>
+      </li>
+    <% } else { %>
+      <li>
+        <a href="/login" <%= firstPathElement === "profile" ? "class=secondary" : "" %>>
+          Login
         </a>
       </li>
     <% } %>
-    <li>
-      <a href="/settings" <%= firstPathElement === "settings" ? "class=secondary" : "" %>>
-        Settings
-      </a>
-    </li>
-    <li>
-      <a href="/profile" <%= firstPathElement === "profile" ? "class=secondary" : "" %>>
-        Profile
-      </a>
-    </li>
   </ul>
 </nav>
