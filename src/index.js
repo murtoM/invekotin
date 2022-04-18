@@ -47,13 +47,6 @@ app.use(
 );
 app.use(layouts);
 
-// Load common data for views
-app.use((req, res, next) => {
-  res.locals.firstPathElement = req.path.split("/")[1]; // Path always starts with forward slash
-  res.locals.config = config;
-  next();
-});
-
 // Setup mongodb as the session store
 const store = new MongoDBStore({
   uri: DB_URI,
@@ -83,7 +76,20 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", EntityStore.getAllStores, EntityStore.renderStoresDashboard);
+// Load common data for views
+app.use((req, res, next) => {
+  res.locals.firstPathElement = req.path.split("/")[1]; // Path always starts with forward slash
+  res.locals.config = config;
+  res.locals.loggedIn = req.isAuthenticated();
+  next();
+});
+
+app.get(
+  "/",
+  User.isAuthenticated,
+  EntityStore.getAllStores,
+  EntityStore.renderStoresDashboard
+);
 
 // User account specific routes
 app.get("/login", User.renderLogin);
@@ -103,43 +109,62 @@ app.post("/register", User.register, User.renderLogin);
 
 app
   .route("/entity/add")
-  .get(Entity.respondWithEntityTypeSelectPage)
-  .post(Entity.handleNewEntityPost);
+  .get(User.isAuthenticated, Entity.respondWithEntityTypeSelectPage)
+  .post(User.isAuthenticated, Entity.handleNewEntityPost);
 app.get("/entity/add/type/:typeStr/store/:storeID", Entity.respondWithNewForm);
 app
   .route("/:typeStr/entity/:entityID/edit")
-  .get(Entity.respondWithEditForm)
-  .post(Entity.handleUpdateEntityPost);
-app.get("/:typeStr/entity/:entityID/delete", Entity.deleteEntity);
+  .get(User.isAuthenticated, Entity.respondWithEditForm)
+  .post(User.isAuthenticated, Entity.handleUpdateEntityPost);
+app.get(
+  "/:typeStr/entity/:entityID/delete",
+  User.isAuthenticated,
+  Entity.deleteEntity
+);
 
 // EntityStore-specific routes
 
 app.get(
   "/entitystore",
+  User.isAuthenticated,
   EntityStore.getAllStores,
   EntityStore.renderStoresDashboard
 );
 app
   .route("/entitystore/add")
-  .get(EntityStore.renderForm)
-  .post(EntityStore.saveNewEntityStore);
-app.get("/entitystore/add/type/:typeStr", EntityStore.renderForm);
+  .get(User.isAuthenticated, EntityStore.renderForm)
+  .post(User.isAuthenticated, EntityStore.saveNewEntityStore);
+app.get(
+  "/entitystore/add/type/:typeStr",
+  User.isAuthenticated,
+  EntityStore.renderForm
+);
 app
   .route("/entitystore/:entityID/edit")
-  .get(EntityStore.renderForm)
-  .post(EntityStore.updateEntityStore);
-app.get("/entitystore/:entityID/delete", EntityStore.deleteEntityStore);
+  .get(User.isAuthenticated, EntityStore.renderForm)
+  .post(User.isAuthenticated, EntityStore.updateEntityStore);
+app.get(
+  "/entitystore/:entityID/delete",
+  User.isAuthenticated,
+  EntityStore.deleteEntityStore
+);
 
 app.get(
   "/:typeStr",
+  User.isAuthenticated,
   EntityStore.getEntityStoresByType,
+  User.isAuthenticated,
   EntityStore.renderEntityStore
 );
 app.get(
   "/:typeStr/:slug",
+  User.isAuthenticated,
   EntityStore.getEntityStoresByType,
+  User.isAuthenticated,
   EntityStore.getSingleEntityStore,
+  User.isAuthenticated,
   EntityStore.getEntitiesInStore,
+  User.isAuthenticated,
   EntityStore.renderEntityStore
 );
 

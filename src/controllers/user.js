@@ -79,6 +79,14 @@ exports.registerTest = async (user) => {
   }
 };
 
+exports.isAuthenticated = (req, res) => {
+  if (req.isAuthenticated()) {
+    next();
+    return;
+  }
+  res.redirect("/login");
+}
+
 const validateUserAttribs = (userAttribs) => {
   if (!validator.isAlphanumeric(userAttribs.username, "fi-FI"))
     throw new Error("Username must contain only alphanumeric characters!");
