@@ -18,9 +18,7 @@ const Flash = require("./modules/flash");
 
 const app = express();
 
-mongoose.connect(DB_URI, {
-  useNewUrlParser: true,
-});
+mongoose.connect(DB_URI, config.mongoose.connect);
 
 const db = mongoose.connection;
 
@@ -36,15 +34,11 @@ db.once("open", () => {
 });
 
 app.set("port", config.appPort);
-app.set("view engine", "ejs");
-app.set("views", "./src/views");
+app.set("view engine", config.viewEngine);
+app.set("views", config.views);
 
-app.use(express.static("src/public"));
-app.use(
-  express.urlencoded({
-    extended: false,
-  })
-);
+app.use(express.static(config.express.static));
+app.use(express.urlencoded(config.express.urlencoded));
 app.use(layouts);
 
 // Setup mongodb as the session store
@@ -55,14 +49,11 @@ const store = new MongoDBStore({
 
 // session and parsers
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded(config.bodyParser.urlencoded));
 app.use(
   expressSession({
-    secret: config.sessionSecret,
+    ...config.express.session,
     store: store,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: config.secureCookies },
   })
 );
 app.use(Flash());
