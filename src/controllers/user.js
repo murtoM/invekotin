@@ -32,7 +32,6 @@ exports.register = async (req, res, next) => {
     email: req.body.email,
   };
 
-  console.log(userAttribs);
   try {
     const existing = await User.findOne({ username: userAttribs.username });
     if (existing) {
