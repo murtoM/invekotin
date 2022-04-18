@@ -79,7 +79,7 @@ exports.registerTest = async (user) => {
   }
 };
 
-exports.isAuthenticated = (req, res) => {
+exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
     return;
