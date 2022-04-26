@@ -130,3 +130,18 @@ Files: src/strategies/auth/*
 Copyright: 2022 Markus Murto
 License: MIT
 
+
+# stylesheets
+
+Files: src/public/css/*
+Copyright: 2022 Markus Ijäs
+           2022 Markus Murto
+License: MIT
+
+
+# client-side js
+
+Files: src/public/js/formvalidationfailure.js src/public/js/loginform.js
+       src/public/js/registerform.js src/public/js/togglepasswordvisibility.js
+Copyright: 2022 Markus Murto
+License: MIT
