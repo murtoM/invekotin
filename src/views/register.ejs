@@ -1,7 +1,9 @@
+<script type="module" src="/js/registerform.js"></script>
+
 <article>
   <header><h1>Register</h1></header>
 
-  <form action="/register" method="post">
+  <form name="registeration-form" action="/register" method="post">
     <label for="username">Username</label>
     <input
       type="text"
@@ -10,6 +12,7 @@
       minlength="3"
       maxlength="128"
       required
+      autofocus
     />
     <label for="email">Email</label>
     <input
@@ -28,8 +31,22 @@
       maxlength="71"
       required
     />
-    <% /* TODO(murtoM): add second password field to check user has typed
-    correctly */ %>
-    <input type="submit" name="submit" value="Register" />
+    <label for="password">Confirm password</label>
+    <input
+      type="password"
+      name="password-check"
+      placeholder="********"
+      minlength="8"
+      maxlength="71"
+      autocomplete="off"
+      required
+    />
+    <input
+      type="checkbox"
+      name="passwordVisibilityToggle"
+      id="passwordVisibilityToggle"
+    />
+    <label for="passwordVisibilityToggle">Show password</label>
+    <input type="submit" name="submit" value="Register"/>
   </form>
 </article>

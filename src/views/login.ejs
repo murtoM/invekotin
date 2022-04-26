@@ -1,7 +1,11 @@
+<% if (!isAuthenticated) { %>
+  <script type="module" src="/js/loginform.js"></script>
+<% } %>
+
 <article>
   <header><h2>Login</h2></header>
   <% if (!isAuthenticated) { %>
-  <form action="/login" method="post">
+  <form name="login-form" action="/login" method="post">
     <label for="username">Username</label>
     <input
       type="text"
@@ -20,6 +24,12 @@
       maxlength="71"
       required
     />
+    <input
+      type="checkbox"
+      name="passwordVisibilityToggle"
+      id="passwordVisibilityToggle"
+    />
+    <label for="passwordVisibilityToggle">Show password</label>
     <input type="submit" name="submit" value="Login" />
   </form>
   <% } else { %>
