@@ -1,4 +1,8 @@
 # invekotin
+
+[![REUSE status](https://api.reuse.software/badge/github.com/murtoM/invekotin)](https://api.reuse.software/info/github.com/murtoM/invekotin)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 Simple inventory management in Express.js.
 
 ## Prerequisites
