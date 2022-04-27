@@ -87,9 +87,13 @@ License: MIT
 
 # view partials
 
+Files: src/views/partials/header.ejs src/views/partials/footer.ejs
+Copyright: 2022 Markus Ijäs
+           2022 Markus Murto
+License: MIT
+
 Files: src/views/partials/entity/* src/views/partials/entitystore/*
-       src/views/partials/forms/* src/views/partials/footer.ejs
-       src/views/partials/header.ejs
+       src/views/partials/forms/*
 Copyright: 2022 Markus Ijäs
 License: MIT
 
